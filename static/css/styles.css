@@ -1,0 +1,611 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+}
+h2 {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+    text-align: center;
+    color: #555;
+}
+
+/* Стили для всего меню */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #333;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.navbar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.navbar ul li {
+    margin: 0 15px;
+}
+
+.navbar ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+    padding: 10px 15px;
+    display: block;
+    transition: background-color 0.3s;
+}
+
+.navbar ul li a:hover {
+    background-color: #555;
+    border-radius: 5px;
+}
+
+
+.main-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+/* Слайдер */
+.left-slider {
+    flex: 1;
+    max-width: 45%;
+}
+
+.left-slider h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 40px;
+    border-bottom: 3px solid #f05a28;
+    display: inline-block;
+}
+
+.slider-wrapper {
+    position: relative;
+    overflow: hidden;
+}
+
+.slider {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.slider-card {
+    flex: 0 0 100%;
+    box-sizing: border-box;
+}
+
+.slider-card img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 5px;
+}
+
+.slider-content {
+    padding: 20px;
+}
+
+.slider-content p {
+    margin: 0 0 10px;
+    color: #777;
+    font-size: 14px;
+}
+
+.slider-content h3 {
+    font-size: 18px;
+    color: #333;
+    margin: 0 0 10px;
+}
+
+.slider-prev,
+.slider-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    z-index: 10;
+}
+
+.slider-prev {
+    left: 10px;
+}
+
+.slider-next {
+    right: 10px;
+}
+
+.slider-prev:hover,
+.slider-next:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* Новости */
+.right-news {
+    flex: 1.5;
+}
+
+.news-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.news-header h2 {
+    font-size: 24px;
+    color: #333;
+    border-bottom: 3px solid #f05a28;
+    display: inline-block;
+}
+
+.news-header a {
+    font-size: 14px;
+    color: #f05a28;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.news-header a:hover {
+    color: #d9431a;
+}
+
+.news-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.news-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.news-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+.card-content {
+    padding: 10px;
+}
+
+.card-content .news-date {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 8px;
+}
+
+.card-content h3 {
+    font-size: 14px;
+    color: #333;
+    margin: 0;
+}
+
+/* Стили для страницы Жизнь школы */
+
+.content-container {
+    display: flex;
+    margin: 40px auto;
+    max-width: 1300px;
+}
+
+.sidebar-menu {
+    margin-top: 40px;
+    width: 30%;
+    height: 300px;
+    border-radius: 5px;
+    border-right: 1px solid #ddd;
+    background-color: white;
+}
+
+.sidebar-menu:hover {
+    transition: .3s;
+    box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
+}
+
+.sidebar-menu ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar-menu ul li {
+    margin-bottom: 10px;
+}
+
+.sidebar-menu ul li a {
+    color: inherit;
+    display: block;
+    padding: 15px 30px 15px 30px;
+    text-decoration: none;
+}
+
+.sidebar-menu ul li a:hover {
+    background-color: #ccc;
+    opacity: .3;
+    color: black;
+
+}
+
+.main-content {
+    width: 80%;
+    padding: 20px;
+}
+
+.blog-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.blog-item {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.blog-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.blog-item div {
+    padding: 15px;
+}
+
+.blog-item h2 {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+.blog-item a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+    align-items: end;
+}
+
+.blog-item a:hover {
+    text-decoration: underline;
+}
+
+.blog-detail {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.blog-detail img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+    border-radius: 8px;
+}
+
+.blog-detail p {
+    font-size: 14px;
+    color: #999;
+}
+
+.blog-detail h1 {
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.blog-detail .description {
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+/* Преподаватели */
+
+.teachers-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin: 60px 0;
+}
+
+.teacher-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    text-align: center;
+    width: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.teacher-card img {
+    border-radius: 10px;
+    width: 100%;
+    object-fit: cover;
+    margin-bottom: 15px;
+}
+
+.teacher-card h2 {
+    font-size: 1.5em;
+    margin: 0 0 10px;
+}
+
+.teacher-card .position {
+    font-size: 1.1em;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.teacher-card p {
+    margin: 5px 0;
+}
+
+.teacher-card a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.teacher-card a:hover {
+    text-decoration: underline;
+}
+
+/* Подробная информация о учителе */
+
+.teacher-detail-container {
+    margin: 60px auto;
+    max-width: 700px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.teacher-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.teacher-header img {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+}
+
+.teacher-header h1 {
+    font-size: 1.5em;
+    margin: 10px 0;
+}
+
+.teacher-header .position {
+    font-size: 1.1em;
+    color: #666;
+}
+
+.teacher-header .contact {
+    font-size: 0.9em;
+    color: #444;
+}
+
+.teacher-tabs {
+    margin-top: 20px;
+}
+
+.tab-menu {
+    list-style: none;
+    display: flex;
+    padding: 0;
+    border-bottom: 2px solid #ddd;
+    margin-bottom: 10px;
+}
+
+.tab-menu li {
+    padding: 10px 20px;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    border-bottom: none;
+    background: #f1f1f1;
+    margin-right: 5px;
+    border-radius: 5px 5px 0 0;
+}
+
+.tab-menu li.active {
+    background: #fff;
+    font-weight: bold;
+    border-bottom: 2px solid #fff;
+}
+
+.tab-content {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    background-color: #fff;
+}
+
+.tab-pane {
+    display: none;
+}
+
+.tab-pane.active {
+    display: block;
+}
+
+/* Контактная информация и геолокация */
+.contact-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.contact-container h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.contact-details {
+    font-size: 1.1em;
+    margin-bottom: 30px;
+}
+
+.contact-details p {
+    margin: 5px 0;
+}
+
+#map {
+    width: 100%;
+    height: 400px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+/* Стили для форм и табов */
+.tabs-container {
+    max-width: 500px;
+    margin: 40px auto;
+    background: #ffffff;
+    padding: 15px;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Вкладки */
+.tabs {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 15px;
+}
+
+.tab-link {
+    padding: 8px 12px;
+    border: none;
+    border-bottom: 2px solid transparent;
+    background: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #555;
+    transition: color 0.3s ease, border-bottom 0.3s ease;
+}
+
+.tab-link.active {
+    color: #007bff;
+    border-bottom: 2px solid #007bff;
+}
+
+.tab-link:hover {
+    color: #0056b3;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Формы */
+.custom-form {
+    display: flex;
+    flex-direction: column;
+}
+.custom-form p {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.custom-form input[type="text"],
+.custom-form input[type="email"],
+.custom-form input[type="file"],
+.custom-form select,
+.custom-form textarea {
+    width: 98%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease;
+}
+
+.custom-form input:focus,
+.custom-form textarea:focus {
+    border-color: #007bff;
+    outline: none;
+    background-color: #fff;
+}
+
+.submit-button {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+    background-color: #0056b3;
+}
+
+.alert-success {
+    padding: 8px;
+    margin-top: 15px;
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 0.75rem;
+}
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    10% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    90% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}

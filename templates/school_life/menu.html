@@ -1,0 +1,9 @@
+<aside class="sidebar-menu">
+    <ul>
+        {% for value, label in categories %}
+            <li>
+                <a href="{% url 'school_life_category' value %}">{{ label }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</aside>

@@ -1,0 +1,96 @@
+{% extends 'index.html' %}
+
+{% block title %}
+    <title>{{ teacher.last_name }} {{ teacher.first_name }} - Информация</title>
+{% endblock %}
+
+{% block content %}
+    <div class="teacher-detail-container">
+        <div class="teacher-header">
+            <img src="{% if teacher.image %}{{ teacher.image.url }}{% else %}/static/default-teacher.png{% endif %}"
+                 alt="Фото преподавателя">
+            <h1>{{ teacher.last_name }} {{ teacher.first_name }} {{ teacher.patronymic }}</h1>
+            <p class="position">{{ teacher.get_position_display }}</p>
+            <p class="contact">
+                <strong>Телефон:</strong> {{ teacher.phone }} |
+                <strong>Email:</strong> <a href="mailto:{{ teacher.email }}">{{ teacher.email }}</a>
+            </p>
+        </div>
+
+        <div class="teacher-tabs">
+            <ul class="tab-menu">
+                <li class="active" data-tab="general-info">Общая информация</li>
+                <li data-tab="education">Образование</li>
+                <li data-tab="experience">Опыт и дисциплины</li>
+                <li data-tab="additional">Дополнительные занятия</li>
+            </ul>
+        
+            <div class="tab-content">
+                <div id="general-info" class="tab-pane active">
+                    <p><strong>Должность:</strong> {{ teacher.get_position_display }}</p>
+                    <p><strong>Филиал:</strong> {{ teacher.branch }}</p>
+                </div>
+            
+                <div id="education" class="tab-pane">
+                    <p><strong>Уровень образования:</strong> {{ teacher.education }}</p>
+                    <p><strong>Квалификация:</strong> {{ teacher.qualification }}</p>
+                    {% if teacher.academic_degree %}
+                        <p><strong>Ученая степень:</strong> {{ teacher.academic_degree }}</p>
+                    {% endif %}
+                    {% if teacher.academic_title %}
+                        <p><strong>Ученое звание:</strong> {{ teacher.academic_title }}</p>
+                    {% endif %}
+                    <p><strong>Повышение
+                        квалификации:</strong> {{ teacher.qualification_improvement|default:"Нет данных" }}</p>
+                    <p><strong>Профессиональная
+                        переподготовка:</strong> {{ teacher.professional_retraining|default:"Нет данных" }}</p>
+                </div>
+            
+                <div id="experience" class="tab-pane">
+                    <p><strong>Опыт работы:</strong> {{ teacher.experience_years }} лет</p>
+                    <p><strong>Преподаваемые дисциплины:</strong></p>
+                    {% if teacher.subjects_taught.exists %}
+                        <ul>
+                            {% for subject in teacher.subjects_taught.all %}
+                                <li>{{ subject.name }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>Нет данных.</p>
+                    {% endif %}
+                </div>
+            
+                <div id="additional" class="tab-pane">
+                    {% if teacher.additional_taught.exists %}
+                        <ul>
+                            {% for activity in teacher.additional_taught.all %}
+                                <li>{{ activity.name }}{% if activity.description %} -
+                                    {{ activity.description }}{% endif %}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>Нет данных.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabs = document.querySelectorAll('.tab-menu li');
+            const panes = document.querySelectorAll('.tab-pane');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function () {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    panes.forEach(p => p.classList.remove('active'));
+                    
+                    this.classList.add('active');
+                    const target = this.getAttribute('data-tab');
+                    document.getElementById(target).classList.add('active');
+                });
+            });
+        });
+
+    </script>
+{% endblock %}

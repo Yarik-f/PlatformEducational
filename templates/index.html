@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% block title %}<title></title>{% endblock %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+
+</head>
+<body>
+<nav class="navbar">
+    <ul>
+        <li><a href="{% url 'home' %}">Главная</a></li>
+        <li><a href="{% url 'school_life' %}">Жизнь школы</a></li>
+        <li><a href="{% url 'teacher' %}">Карт препод</a></li>
+        <li><a href="{% url 'contacts' %}">Контактная инфа</a></li>
+        <li><a href="{% url 'forms' %}">Форма для принятия заявок</a></li>
+    </ul>
+</nav>
+
+{% block content %}
+{% endblock %}
+</body>
+</html>

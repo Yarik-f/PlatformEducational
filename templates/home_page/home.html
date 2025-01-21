@@ -1,0 +1,75 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block title %}
+    <title>Главная страница</title>
+{% endblock %}
+
+{% block content %}
+    <div class="main-container">
+        <div class="left-slider">
+            <h2>Главное</h2>
+            <div class="slider-wrapper">
+                <div class="slider">
+                    {% for new in news|slice:":5" %}
+                        <div class="slider-card">
+                            <img src="{{ new.image.url }}" alt="Слайд 1">
+                            <div class="slider-content">
+                                <p><i class="calendar-icon"></i> {{ new.pub_date }}</p>
+                                <h3>{{ new.title }}</h3>
+                                <p>{{ new.description }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <button class="slider-prev">&lt;</button>
+                <button class="slider-next">&gt;</button>
+            </div>
+        </div>
+    
+        <div class="right-news">
+            <div class="news-header">
+                <h2>Новости</h2>
+                <a href="{% url 'school_life_category' 'news' %}">Все новости</a>
+            </div>
+            <div class="news-grid">
+                {% for new in news|slice:":6" %}
+                <div class="news-card">
+                    <img src="{{ new.image.url }}" alt="Новость 1">
+                    <div class="card-content">
+                        <p class="news-date"><i class="calendar-icon"></i> {{ new.pub_date }}</p>
+                        <h3>{{ new.title }}</h3>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const slider = document.querySelector(".slider");
+            const slides = document.querySelectorAll(".slider-card");
+            const prevButton = document.querySelector(".slider-prev");
+            const nextButton = document.querySelector(".slider-next");
+
+            let currentIndex = 0;
+            
+            function updateSlide() {
+                const offset = -currentIndex * 100;
+                slider.style.transform = `translateX(${offset}%)`;
+            }
+            
+            prevButton.addEventListener("click", () => {
+                currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+                updateSlide();
+            });
+            
+            nextButton.addEventListener("click", () => {
+                currentIndex = (currentIndex + 1) % slides.length;
+                updateSlide();
+            });
+        });
+
+    </script>
+{% endblock %}
