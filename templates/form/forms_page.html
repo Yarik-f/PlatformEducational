@@ -9,7 +9,7 @@
             <button class="tab-link" onclick="openTab(event, 'question-form')">Задать вопрос</button>
         </div>
     
-        <div id="admission-form" class="tab-content" style="display: block;">
+        <div id="admission-form" class="tab-content-form" style="display: block;">
             <h2>Форма заявки на поступление</h2>
             <form method="post" enctype="multipart/form-data" class="custom-form">
                 {% csrf_token %}
@@ -24,7 +24,7 @@
             {% endif %}
         </div>
     
-        <div id="question-form" class="tab-content" style="display: none;">
+        <div id="question-form" class="tab-content-form" style="display: none;">
             <h2>Форма для вопросов</h2>
             <form method="post" enctype="multipart/form-data" class="custom-form">
                 {% csrf_token %}
@@ -50,7 +50,7 @@
         });
 
         function openTab(event, tabId) {
-            const tabContents = document.querySelectorAll('.tab-content');
+            const tabContents = document.querySelectorAll('.tab-content-form');
             tabContents.forEach(tab => (tab.style.display = 'none'));
             
             const tabLinks = document.querySelectorAll('.tab-link');

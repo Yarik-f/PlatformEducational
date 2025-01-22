@@ -2,7 +2,7 @@
     <ul>
         {% for value, label in categories %}
             <li>
-                <a href="{% url 'school_life_category' value %}">{{ label }}</a>
+                <a href="{% url 'school_life' value %}">{{ label }}</a>
             </li>
         {% endfor %}
     </ul>

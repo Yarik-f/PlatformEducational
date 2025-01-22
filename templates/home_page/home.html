@@ -12,38 +12,101 @@
                 <div class="slider">
                     {% for new in news|slice:":5" %}
                         <div class="slider-card">
-                            <img src="{{ new.image.url }}" alt="Слайд 1">
+                            <img src="{{ new.image.url }}" alt="Новость" class="slider-image">
                             <div class="slider-content">
-                                <p><i class="calendar-icon"></i> {{ new.pub_date }}</p>
-                                <h3>{{ new.title }}</h3>
-                                <p>{{ new.description }}</p>
+                                <h3 class="slider-title">{{ new.title }}</h3>
+                                <p class="slider-date">{{ new.pub_date }}</p>
                             </div>
                         </div>
                     {% endfor %}
                 </div>
-                <button class="slider-prev">&lt;</button>
-                <button class="slider-next">&gt;</button>
+                <button class="slider-prev">⟨</button>
+                <button class="slider-next">⟩</button>
             </div>
         </div>
-    
         <div class="right-news">
             <div class="news-header">
-                <h2>Новости</h2>
-                <a href="{% url 'school_life_category' 'news' %}">Все новости</a>
+                <h2 class="section-title">Новости</h2>
+                <a href="{% url 'school_life' 'news' %}" class="view-all-link">Все новости</a>
             </div>
             <div class="news-grid">
                 {% for new in news|slice:":6" %}
-                <div class="news-card">
-                    <img src="{{ new.image.url }}" alt="Новость 1">
-                    <div class="card-content">
-                        <p class="news-date"><i class="calendar-icon"></i> {{ new.pub_date }}</p>
-                        <h3>{{ new.title }}</h3>
+                    <div class="news-card">
+                        <img src="{{ new.image.url }}" alt="Новость" class="news-image">
+                        <div class="news-content">
+                            <p class="news-date">{{ new.pub_date }}</p>
+                            <h3 class="news-title">{{ new.title }}</h3>
+                        </div>
                     </div>
-                </div>
                 {% endfor %}
             </div>
         </div>
     </div>
+    <div class="about-school-container">
+        <div class="about-school">
+            <div class="about-school-text">
+                <div class="about-school-header">
+                    <h2>О школе</h2>
+                    <a href="">Все новости</a>
+                </div>
+                <div class="about-school-description">
+                    <p>
+                        Рад приветствовать Вас на нашем сайте! Надеюсь, данный интернет-ресурс окажется небесполезным
+                        для Вас. Наш сайт - это место для интересного общения, несмотря на границы и расстояния.
+                    </p>
+                    <ul>
+                        <li>познакомиться с основными вехами истории школы</li>
+                        <li>узнать о традициях школы, о наших достижениях</li>
+                        <li>ознакомиться с нормативными документами образовательного учреждения</li>
+                    </ul>
+                    <p>
+                        Мы многое делаем для того, чтобы быть школой сотрудничества, в первую очередь с родителями.
+                        Очень надеемся, что круг наших друзей будет постоянно увеличиваться.
+                    </p>
+                </div>
+            </div>
+
+            {% for director in director %}
+                <div class="about-school-director">
+                    <img src="{{ director.image.url }}" alt="">
+                    <p>{{ director_positions }}</p>
+                    <h3>{{ director.last_name }} {{ director.first_name }} {{ director.patronymic }}</h3>
+                </div>
+            {% endfor %}
+
+            <div class="about-school-contacts">
+                <div id="map" class="map"></div>
+                <h3>Контакты</h3>
+                <p><strong>Название:</strong> Средняя школа №42</p>
+                <p><strong>Адрес:</strong> ул. Школьная, д. 10, г. Москва</p>
+                <p><strong>Время работы:</strong> Пн-Пт: 8:00 - 18:00</p>
+                <p><strong>Телефон:</strong> +7 (495) 123-45-67</p>
+                <p><strong>Email:</strong> <a href="mailto:info@school42.ru">mail@simai.ru</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+    <script>
+        ymaps.ready(init);
+
+        function init() {
+            var map = new ymaps.Map("map", {
+                center: [55.7558, 37.6173],
+                zoom: 12,
+                controls: ['zoomControl', 'fullscreenControl']
+            });
+            var placemark = new ymaps.Placemark([55.7558, 37.6173], {
+                balloonContent: '<strong>Средняя школа №42</strong><br>ул. Школьная, д. 10, г. Москва',
+            }, {
+                preset: 'islands#icon',
+                iconColor: '#F05A28'
+            });
+
+            map.geoObjects.add(placemark);
+        }
+    </script>
+
 
 
     <script>
@@ -54,22 +117,20 @@
             const nextButton = document.querySelector(".slider-next");
 
             let currentIndex = 0;
-            
+
             function updateSlide() {
-                const offset = -currentIndex * 100;
-                slider.style.transform = `translateX(${offset}%)`;
+                slider.style.transform = `translateX(-${currentIndex * 100}%)`;
             }
-            
+
             prevButton.addEventListener("click", () => {
                 currentIndex = (currentIndex - 1 + slides.length) % slides.length;
                 updateSlide();
             });
-            
+
             nextButton.addEventListener("click", () => {
                 currentIndex = (currentIndex + 1) % slides.length;
                 updateSlide();
             });
         });
-
     </script>
 {% endblock %}

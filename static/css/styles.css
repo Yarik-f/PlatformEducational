@@ -1,9 +1,13 @@
+/* Общие стили */
 body {
-    font-family: Arial, sans-serif;
     margin: 0;
-    padding: 0;
-    background-color: #f5f5f5;
+    font-family: 'Arial', sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333;
+    background-color: #f4f4f4;
 }
+
 h2 {
     font-size: 1.2rem;
     margin-bottom: 5px;
@@ -11,14 +15,36 @@ h2 {
     color: #555;
 }
 
-/* Стили для всего меню */
-.navbar {
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* Шапка */
+.main-header {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e0e0e0;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.05);
     position: fixed;
     top: 0;
+    left: 0;
     width: 100%;
-    background-color: #333;
     z-index: 1000;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.main-header .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 0;
+}
+
+.main-header .logo a {
+    font-size: 24px;
+    font-weight: bold;
+    color: #007bff;
+    text-decoration: none;
 }
 
 .navbar ul {
@@ -26,28 +52,43 @@ h2 {
     margin: 0;
     padding: 0;
     display: flex;
-    justify-content: center;
+    gap: 20px;
 }
 
 .navbar ul li {
-    margin: 0 15px;
+    display: inline-block;
 }
 
 .navbar ul li a {
     text-decoration: none;
-    color: white;
-    font-size: 18px;
-    padding: 10px 15px;
-    display: block;
-    transition: background-color 0.3s;
+    color: #333;
+    font-size: 16px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
 }
 
 .navbar ul li a:hover {
-    background-color: #555;
-    border-radius: 5px;
+    background-color: #007bff;
+    color: #ffffff;
 }
 
+/* Фиксация контента */
+body {
+    padding-top: 70px;
+}
 
+/* Подвал */
+.main-footer {
+    background-color: #ffffff;
+    border-top: 1px solid #e0e0e0;
+    padding: 20px 0;
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+}
+
+/* Слайдер */
 .main-container {
     display: flex;
     justify-content: space-between;
@@ -55,12 +96,8 @@ h2 {
     max-width: 1200px;
     margin: 40px auto;
     padding: 20px;
-    background-color: #fff;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
 }
 
-/* Слайдер */
 .left-slider {
     flex: 1;
     max-width: 45%;
@@ -77,6 +114,7 @@ h2 {
 .slider-wrapper {
     position: relative;
     overflow: hidden;
+    border-radius: 8px;
 }
 
 .slider {
@@ -89,6 +127,10 @@ h2 {
     box-sizing: border-box;
 }
 
+.slider-wrapper:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
 .slider-card img {
     width: 100%;
     height: auto;
@@ -98,6 +140,8 @@ h2 {
 
 .slider-content {
     padding: 20px;
+    height: 100%;
+    background-color: #fff;
 }
 
 .slider-content p {
@@ -146,7 +190,7 @@ h2 {
 
 /* Новости */
 .right-news {
-    flex: 1.5;
+    padding: 20px;
 }
 
 .news-header {
@@ -156,22 +200,30 @@ h2 {
     margin-bottom: 20px;
 }
 
-.news-header h2 {
-    font-size: 24px;
+.section-title {
+    font-size: 20px;
     color: #333;
-    border-bottom: 3px solid #f05a28;
-    display: inline-block;
-}
-
-.news-header a {
-    font-size: 14px;
-    color: #f05a28;
-    text-decoration: none;
     font-weight: bold;
+    border-bottom: 3px solid #f05a28;
+    padding-bottom: 5px;
 }
 
-.news-header a:hover {
+.view-all-link {
+    text-decoration: none;
+    background: #f05a28;
+    color: #fff;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background 0.3s ease;
+}
+
+.view-all-link:hover {
+    background: #fff;
     color: #d9431a;
+    border-radius: 20px;
+    border: 1px solid #d9431a;
 }
 
 .news-grid {
@@ -182,45 +234,187 @@ h2 {
 
 .news-card {
     background: #fff;
-    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.news-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.news-image {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-bottom: 1px solid #eee;
+}
+
+.news-content {
+    padding: 10px;
+}
+
+.news-date {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 5px;
+}
+
+.news-title {
+    font-size: 14px;
+    color: #333;
+    margin: 0;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.news-title:hover {
+    color: #f05a28;
+    cursor: pointer;
+}
+/* Блок о школе */
+.about-school-container{
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.14);
+    margin-bottom: 40px;
+}
+.about-school {
+    display: grid;
+    grid-template-columns: 1.5fr 1.5fr 1.5fr;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-top: 30px;
+    padding-bottom: 20px;
+}
+
+/* Левая колонка: информация о школе */
+
+.about-school-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.about-school-header h2 {
+    font-size: 24px;
+    color: #333;
+    border-bottom: 3px solid #f05a28;
+    padding-bottom: 5px;
+    margin: 0;
+}
+
+.about-school-header a {
+    text-decoration: none;
+    color: #f05a28;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.about-school-header a:hover {
+    color: #d9431a;
+}
+
+.about-school-description {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #444;
+}
+
+.about-school-description ul {
+    padding-left: 20px;
+    margin-top: 10px;
+    list-style: disc;
+}
+
+.about-school-description ul li {
+    margin-bottom: 10px;
+}
+
+/* Центральная колонка директор */
+.about-school-director {
+    padding: 20px;
+    text-align: center;
+    background-color: rgba(216, 215, 215, 0.13);
+}
+
+.about-school-director img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin-bottom: 15px;
+    object-fit: cover;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.about-school-director p {
+    font-size: 14px;
+    color: #888;
+    margin: 5px 0;
+}
+
+.about-school-director h3 {
+    font-size: 20px;
+    color: #333;
+    margin: 0;
+}
+
+/* Правая колонка: контакты */
+
+.about-school-contacts h3 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.about-school-contacts p {
+    font-size: 14px;
+    color: #444;
+    margin: 5px 0;
+}
+
+.about-school-contacts a {
+    text-decoration: none;
+    color: #f05a28;
+    transition: color 0.3s ease;
+}
+
+.about-school-contacts a:hover {
+    color: #d9431a;
+}
+
+.map {
+    width: 400px;
+    height: 300px;
+    margin-top: 15px;
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.news-card img {
-    width: 100%;
-    height: 150px;
-    object-fit: cover;
-}
-
-.card-content {
-    padding: 10px;
-}
-
-.card-content .news-date {
-    font-size: 12px;
-    color: #888;
-    margin-bottom: 8px;
-}
-
-.card-content h3 {
-    font-size: 14px;
-    color: #333;
-    margin: 0;
-}
 
 /* Стили для страницы Жизнь школы */
+/* Общий контейнер для меню и контента */
+.layout-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    gap: 20px;
+}
 
-.content-container {
-    display: flex;
-    margin: 40px auto;
-    max-width: 1300px;
+.main-content {
+    grid-column: span 3;
 }
 
 .sidebar-menu {
-    margin-top: 40px;
-    width: 30%;
+    grid-column: span 1;
+    margin-top: 85px;
+    width: 80%;
     height: 300px;
     border-radius: 5px;
     border-right: 1px solid #ddd;
@@ -242,22 +436,27 @@ h2 {
 }
 
 .sidebar-menu ul li a {
-    color: inherit;
+    color: black;
     display: block;
     padding: 15px 30px 15px 30px;
     text-decoration: none;
 }
 
 .sidebar-menu ul li a:hover {
-    background-color: #ccc;
-    opacity: .3;
-    color: black;
+    color: #007BFF;
+    background-color: rgba(209, 195, 195, 0.32);
+    opacity: .9;
 
 }
 
-.main-content {
-    width: 80%;
-    padding: 20px;
+/* Блоги */
+.category-title {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #333;
+    border-bottom: 3px solid #f05a28;
+    display: inline-block;
+    padding-bottom: 5px;
 }
 
 .blog-list {
@@ -268,68 +467,107 @@ h2 {
 
 .blog-item {
     background-color: #fff;
-    border: 1px solid #ddd;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    cursor: pointer;
 }
 
-.blog-item img {
+.blog-item:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px);
+}
+
+.blog-image {
     width: 100%;
-    height: 200px;
+    height: 150px;
     object-fit: cover;
 }
 
-.blog-item div {
+.blog-content {
     padding: 15px;
 }
 
-.blog-item h2 {
+.blog-date {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 10px;
+}
+
+.blog-title {
     font-size: 18px;
-    margin: 10px 0;
+    color: #333;
+    margin: 0;
 }
 
-.blog-item a {
+.blog-title a {
     text-decoration: none;
-    color: #007bff;
-    font-weight: bold;
-    align-items: end;
+    color: inherit;
+    transition: color 0.3s ease;
 }
 
-.blog-item a:hover {
-    text-decoration: underline;
+.blog-title a:hover {
+    color: #f05a28;
 }
 
+/* Подробная информация элемента блога */
 .blog-detail {
-    max-width: 800px;
-    margin: 0 auto;
+    background-color: #fff;
     padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
 }
 
-.blog-detail img {
+.back-button {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 10px 15px;
+    background-color: #f05a28;
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.back-button:hover {
+    background-color: #d9431a;
+}
+
+.blog-detail-image {
     width: 100%;
     height: auto;
-    margin-bottom: 20px;
     border-radius: 8px;
-}
-
-.blog-detail p {
-    font-size: 14px;
-    color: #999;
-}
-
-.blog-detail h1 {
-    font-size: 28px;
     margin-bottom: 20px;
+    object-fit: cover;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.blog-detail .description {
+.blog-detail-date {
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 10px;
+}
+
+.blog-detail-title {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #f05a28;
+    padding-bottom: 5px;
+}
+
+.blog-detail-description {
     font-size: 16px;
     line-height: 1.6;
+    color: #444;
 }
 
-/* Преподаватели */
 
+/* Преподаватели */
 .teachers-container {
     display: flex;
     flex-wrap: wrap;
@@ -379,85 +617,111 @@ h2 {
 }
 
 /* Подробная информация о учителе */
-
 .teacher-detail-container {
-    margin: 60px auto;
-    max-width: 700px;
-    padding: 15px;
-    background-color: #f9f9f9;
+    max-width: 900px;
+    margin: 50px auto;
+    background: #fff;
     border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
 }
 
 .teacher-header {
     text-align: center;
-    margin-bottom: 20px;
+    padding: 20px;
+    border-bottom: 1px solid #eee;
 }
 
 .teacher-header img {
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
-    width: 100px;
-    height: 100px;
     object-fit: cover;
+    margin-bottom: 15px;
 }
 
 .teacher-header h1 {
-    font-size: 1.5em;
+    font-size: 24px;
     margin: 10px 0;
+    color: #333;
 }
 
 .teacher-header .position {
-    font-size: 1.1em;
+    font-size: 16px;
     color: #666;
 }
 
 .teacher-header .contact {
-    font-size: 0.9em;
-    color: #444;
+    font-size: 14px;
+    color: #555;
+}
+
+.teacher-header a {
+    color: #007BFF;
+    text-decoration: none;
 }
 
 .teacher-tabs {
-    margin-top: 20px;
+    padding: 20px;
 }
 
 .tab-menu {
-    list-style: none;
     display: flex;
-    padding: 0;
-    border-bottom: 2px solid #ddd;
-    margin-bottom: 10px;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
 }
 
-.tab-menu li {
-    padding: 10px 20px;
+.tab-menu .tab-menu-link {
+    flex: 1;
+    padding: 10px;
+    text-align: center;
+    font-size: 14px;
+    color: #555;
+    background: #f9f9f9;
+    border: none;
+    border-radius: 4px;
     cursor: pointer;
-    border: 1px solid #ddd;
-    border-bottom: none;
-    background: #f1f1f1;
-    margin-right: 5px;
-    border-radius: 5px 5px 0 0;
+    transition: all 0.3s ease;
 }
 
-.tab-menu li.active {
-    background: #fff;
-    font-weight: bold;
-    border-bottom: 2px solid #fff;
+.tab-menu .tab-menu-link.active {
+    color: #fff;
+    background: #007BFF;
+}
+
+.tab-menu .tab-menu-link:hover {
+    background: #007BFF;
+    color: #fff;
 }
 
 .tab-content {
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 15px;
-    background-color: #fff;
-}
-
-.tab-pane {
     display: none;
+    padding: 20px;
+    font-size: 15px;
+    color: #444;
+    border-radius: 4px;
+    background: #f9f9f9;
 }
 
-.tab-pane.active {
+.tab-content.active {
     display: block;
 }
+
+.tab-content ul {
+    padding-left: 20px;
+    margin: 10px 0;
+}
+
+.tab-content li {
+    margin-bottom: 5px;
+}
+
+.tab-content p {
+    margin: 10px 0;
+}
+
 
 /* Контактная информация и геолокация */
 .contact-container {
@@ -527,11 +791,11 @@ h2 {
     color: #0056b3;
 }
 
-.tab-content {
+.tab-content-form {
     display: none;
 }
 
-.tab-content.active {
+.tab-content-form.active {
     display: block;
 }
 
@@ -540,6 +804,7 @@ h2 {
     display: flex;
     flex-direction: column;
 }
+
 .custom-form p {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -591,6 +856,7 @@ h2 {
     text-align: center;
     font-size: 0.75rem;
 }
+
 @keyframes fadeInOut {
     0% {
         opacity: 0;

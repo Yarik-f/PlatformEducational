@@ -9,8 +9,8 @@
         <h1>Контактная информация</h1>
 
         <div class="contact-details">
-            <p><strong>Адрес:</strong> г. Симайск, ул. Университетская, д. 1</p>
-            <p><strong>Телефон:</strong> +7 347 000 00 00</p>
+            <p><strong>Адрес:</strong> ул. Школьная, д. 10, г. Москва</p>
+            <p><strong>Телефон:</strong> +7 (495) 123-45-67</p>
             <p><strong>Email:</strong> <a href="mailto:mail@simai.ru">mail@simai.ru</a></p>
             <p><strong>Сайт:</strong> <a href="http://obr.site/" target="_blank">http://obr.site/</a></p>
         </div>
@@ -20,18 +20,23 @@
     </div>
     <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
     <script>
-        ymaps.ready(function () {
+        ymaps.ready(init);
+
+        function init() {
             var map = new ymaps.Map("map", {
-                center: [55.751244, 37.618423],
-                zoom: 15,
+                center: [55.7558, 37.6173],
+                zoom: 12,
+                controls: ['zoomControl', 'fullscreenControl']
             });
-            
-            var placemark = new ymaps.Placemark([55.751244, 37.618423], {
-                hintContent: "Наш офис",
-                balloonContent: "г. Симайск, ул. Университетская, д. 1",
+            var placemark = new ymaps.Placemark([55.7558, 37.6173], {
+                balloonContent: '<strong>Средняя школа №42</strong><br>ул. Школьная, д. 10, г. Москва',
+            }, {
+                preset: 'islands#icon',
+                iconColor: '#F05A28'
             });
+
             map.geoObjects.add(placemark);
-        });
+        }
     </script>
 {% endblock %}
 

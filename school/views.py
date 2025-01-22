@@ -5,9 +5,18 @@ from school.models import *
 
 
 def home_view(request):
+    positions = Teacher.POSITION_CHOICES
+    director = Teacher.objects.filter(position='director')
+    director_positions = dict(positions).get('director')
     news = Blog.objects.filter(category='news')
     announce = Blog.objects.filter(category='announce')
-    return render(request, 'home_page/home.html', {'news': news, 'announces': announce})
+    return render(request, 'home_page/home.html',
+                  {
+                      'news': news,
+                      'announces': announce,
+                      'director': director,
+                      'director_positions': director_positions,
+                  })
 
 
 def school_life_view(request, category=None):
@@ -59,12 +68,14 @@ def forms_view(request):
             if admission_form.is_valid():
                 admission_form.save()
                 success_message = "Заявка на поступление успешно отправлена!"
+                admission_form = AdmissionRequestForm()
         elif form_type == "question_form":
             question_form = QuestionForm(request.POST)
             admission_form = AdmissionRequestForm()
             if question_form.is_valid():
                 question_form.save()
                 success_message = "Ваш вопрос успешно отправлен!"
+                question_form = QuestionForm()
     else:
         admission_form = AdmissionRequestForm()
         question_form = QuestionForm()

@@ -3,34 +3,36 @@
     <title>Жизнь школы</title>
 {% endblock %}
 {% block content %}
-<div class="content-container">
-    {% include 'school_life/menu.html' %}
+<div class="layout-container">
+    <aside class="sidebar">
+        {% include 'school_life/menu.html' %}
+    </aside>
 
-    <section class="main-content">
+    <main class="main-content">
         {% if blogs %}
             {% if current_category %}
-                <h1>{{ current_category }}</h1>
+                <h1 class="category-title">{{ current_category }}</h1>
             {% else %}
-                <h1>Все записи</h1>
+                <h1 class="category-title">Все записи</h1>
             {% endif %}
 
             <div class="blog-list">
-                {% for blog in blogs|slice:":4" %}
+                {% for blog in blogs %}
                     <div class="blog-item">
                         {% if blog.image %}
-                            <img src="{{ blog.image.url }}" alt="{{ blog.title }}">
+                            <img src="{{ blog.image.url }}" alt="{{ blog.title }}" class="blog-image">
                         {% endif %}
-                        <div>
-                            <p><strong>Дата публикации:</strong> {{ blog.pub_date }}</p>
-                            <h2>{{ blog.title }}</h2>
-                            <a href="{% url 'blog_detail' blog.id %}" class="details-button">Подробнее</a>
+                        <div class="blog-content">
+                            <p class="blog-date"><strong>Дата публикации:</strong> {{ blog.pub_date }}</p>
+                            <h2 class="blog-title">
+                                <a href="{% url 'blog_detail' blog.id %}">{{ blog.title }}</a>
+                            </h2>
                         </div>
                     </div>
                 {% endfor %}
-            </div>
         {% else %}
             <p>Нет записей в этой категории.</p>
         {% endif %}
-    </section>
+    </main>
 </div>
 {% endblock %}
