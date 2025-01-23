@@ -19,6 +19,12 @@
                 <li><a href="{% url 'teacher' %}">Преподаватели</a></li>
                 <li><a href="{% url 'contacts' %}">Контакты</a></li>
                 <li><a href="{% url 'forms' %}">Заявки</a></li>
+                {% if user.is_authenticated  %}
+                    <li><a href="{% url 'profile' %}">Профиль</a></li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Войти-></a></li>
+                {% endif %}
+                
             </ul>
         </nav>
     </div>

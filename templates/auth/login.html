@@ -1,0 +1,17 @@
+{% extends 'index.html' %}
+{% block title %}
+    <title>Авторизация</title>
+{% endblock %}
+{% block content %}
+<div class="login-container">
+    <h1>Вход</h1>
+    <form method="post" class="login-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="login-button">Войти</button>
+    </form>
+    {% if error %}
+        <p class="error-message">{{ error }}</p>
+    {% endif %}
+</div>
+{% endblock %}

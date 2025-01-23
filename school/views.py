@@ -1,7 +1,15 @@
-from django.shortcuts import render, get_object_or_404
+from django.contrib.auth import login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm
+from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.contrib.auth import views as auth_views
+from rest_framework import viewsets
 
 from school.forms import QuestionForm, AdmissionRequestForm
 from school.models import *
+from school.serializers import TeacherSerializer
 
 
 def home_view(request):
@@ -56,6 +64,7 @@ def teacher_detail_view(request, teacher_id):
 def contacts_view(request):
     return render(request, 'contacts/contacts.html')
 
+
 def forms_view(request):
     success_message = None
     admission_form = AdmissionRequestForm()
@@ -86,3 +95,53 @@ def forms_view(request):
                       "question_form": question_form,
                       "success_message": success_message
                   })
+
+
+def login_view(request):
+    error = None
+    if request.method == 'POST':
+        form = AuthenticationForm(data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('home')
+        else:
+            error = "Неверное имя пользователя или пароль"
+    else:
+        form = AuthenticationForm()
+
+    return render(request, 'auth/login.html', {'form': form, 'error': error})
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')
+
+
+@login_required
+def profile_view(request):
+    user = request.user
+
+    if user.groups.filter(name='Teachers').exists():
+        profile = Teacher.objects.get(user=user)
+        role = 'Teacher'
+    else:
+        profile = Teacher.objects.get(user=user)
+        role = 'Student'
+
+    context = {
+        'user': user,
+        'profile': profile,
+        'role': role
+    }
+    return render(request, 'auth/profile.html', context)
+@method_decorator(login_required, name='dispatch')
+class PasswordChangeView(auth_views.PasswordChangeView):
+    template_name = 'auth/password_change.html'
+    success_url = reverse_lazy('profile')
+    success_message = "Вы успешно сменили пароль!"
+
+
+class TeacherViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Teacher.objects.all()
+    serializer_class = TeacherSerializer
