@@ -8,13 +8,15 @@
             <button class="tab-link active" onclick="openTab(event, 'admission-form')">Заявка на поступление</button>
             <button class="tab-link" onclick="openTab(event, 'question-form')">Задать вопрос</button>
         </div>
-    
+
         <div id="admission-form" class="tab-content-form" style="display: block;">
             <h2>Форма заявки на поступление</h2>
             <form method="post" enctype="multipart/form-data" class="custom-form">
-                {% csrf_token %}
-                <input type="hidden" name="form_type" value="admission_form">
-                {{ admission_form.as_p }}
+                <div class="form-container">
+                    {% csrf_token %}
+                    <input type="hidden" name="form_type" value="admission_form">
+                    {{ admission_form.as_p }}
+                </div>
                 <button type="submit" class="submit-button">Отправить заявку</button>
             </form>
             {% if success_message %}
@@ -23,7 +25,7 @@
                 </div>
             {% endif %}
         </div>
-    
+
         <div id="question-form" class="tab-content-form" style="display: none;">
             <h2>Форма для вопросов</h2>
             <form method="post" enctype="multipart/form-data" class="custom-form">
@@ -52,10 +54,10 @@
         function openTab(event, tabId) {
             const tabContents = document.querySelectorAll('.tab-content-form');
             tabContents.forEach(tab => (tab.style.display = 'none'));
-            
+
             const tabLinks = document.querySelectorAll('.tab-link');
             tabLinks.forEach(link => link.classList.remove('active'));
-            
+
             document.getElementById(tabId).style.display = 'block';
             event.currentTarget.classList.add('active');
         }

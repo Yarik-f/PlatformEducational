@@ -28,11 +28,27 @@ class QuestionAdmin(admin.ModelAdmin):
 
 @admin.register(AdmissionRequest)
 class AdmissionRequestAdmin(admin.ModelAdmin):
-    list_display = ['parent_full_name', 'student_full_name', 'grade_applied', 'file_link']
+    list_display = ['parent_full_name', 'last_name', 'first_name', 'grade_applied']
 
-    def file_link(self, obj):
-        if obj.attached_files:
-            return mark_safe(f'<a href="{obj.attached_files.url}" download>Скачать</a>')
-        return "Нет файла"
-    file_link.allow_tags = True
-    file_link.short_description = "Скачать файл"
+
+# @admin.register(AdmissionFile)
+# class AdmissionFileAdmin(admin.ModelAdmin):
+#     pass
+
+@admin.register(Student)
+class StudentAdmin(admin.ModelAdmin):
+    list_display = ['last_name', 'first_name', 'classroom']
+
+@admin.register(UploadedFile)
+class UploadedFileAdmin(admin.ModelAdmin):
+    pass
+@admin.register(DocumentArchive)
+class DocumentArchiveAdmin(admin.ModelAdmin):
+    list_display = ['archive']
+@admin.register(Class)
+class ClassAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(Schedule)
+class ScheduleAdmin(admin.ModelAdmin):
+    pass

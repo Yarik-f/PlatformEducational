@@ -16,8 +16,13 @@ urlpatterns = [
     path('forms/', views.forms_view, name='forms'),
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
-    path('password_change/', auth_views.PasswordChangeView.as_view(template_name='auth/password_change.html'),
-         name='password_change'),
+    path('password_change/', views.custom_password_change, name='password_change'),
 
-    path('profile/', views.profile_view, name='profile')
+    path('profile/', views.profile_view, name='profile'),
+    # path('profile/document/', views.document_view, name='document')
+    path('document/', views.upload_file, name='upload_file'),
+    path('document/archive/', views.archive_files, name='archive_files'),
+    path('admissions/', views.admission_requests_list, name='admission_requests_list'),
+    path('admissions/<int:pk>/', views.admission_request_detail, name='admission_request_detail'),
+    path('download/<int:file_id>/', views.download_file, name='download_file'),
 ]

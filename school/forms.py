@@ -1,6 +1,7 @@
 from django import forms
 
-from .models import Question, AdmissionRequest
+from .models import Question, AdmissionRequest, UploadedFile
+
 
 class QuestionForm(forms.ModelForm):
     class Meta:
@@ -16,13 +17,24 @@ class AdmissionRequestForm(forms.ModelForm):
         fields = [
             "parent_full_name",
             "parent_passport",
-            "student_full_name",
+            "parent_id_number",
+            "parent_email",
+            "last_name",
+            "first_name",
+            "patronymic",
             "student_passport",
+            "student_id_number",
             "grade_applied",
-            "attached_files"
         ]
         widgets = {
             "parent_passport": forms.TextInput(attrs={"placeholder": "Серия и номер паспорта"}),
+            "parent_id_number": forms.TextInput(attrs={"placeholder": "ИН паспорта"}),
             "student_passport": forms.TextInput(attrs={"placeholder": "Серия и номер паспорта"}),
+            "student_id_number": forms.TextInput(attrs={"placeholder": "ИН паспорта"}),
             "grade_applied": forms.TextInput(attrs={"placeholder": "Например, 10 класс"}),
         }
+
+class SingleFileUploadForm(forms.ModelForm):
+    class Meta:
+        model = UploadedFile
+        fields = ['file']

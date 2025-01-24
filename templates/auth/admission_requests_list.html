@@ -1,0 +1,35 @@
+{% extends 'index.html' %}
+{% block content %}
+    <div class="profile-container">
+        {% include 'auth/profile_menu.html' %}
+        <div class="admission-content">
+            <h1>Заявки на поступление</h1>
+            <table>
+                <thead>
+                <tr>
+                    <th>ФИО ученика</th>
+                    <th>Класс</th>
+                    <th>Статус</th>
+                    <th>Действие</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for admission_request in admission_requests %}
+                    <tr>
+                        <td>{{ admission_request.last_name }} {{ admission_request.first_name }} {{ admission_request.patronymic }}</td>
+                        <td>{{ admission_request.grade_applied }}</td>
+                        <td>{{ admission_request.get_is_approved_display }}</td>
+                        <td>
+                            <a href="{% url 'admission_request_detail' admission_request.pk %}" class="admission-button">Просмотреть</a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="4">Нет заявок на поступление.</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

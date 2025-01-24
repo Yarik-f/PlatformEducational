@@ -274,12 +274,14 @@ body {
     color: #f05a28;
     cursor: pointer;
 }
+
 /* Блок о школе */
-.about-school-container{
+.about-school-container {
     background-color: #f9f9f9;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.14);
     margin-bottom: 40px;
 }
+
 .about-school {
     display: grid;
     grid-template-columns: 1.5fr 1.5fr 1.5fr;
@@ -800,6 +802,12 @@ body {
 }
 
 /* Формы */
+.form-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
 .custom-form {
     display: flex;
     flex-direction: column;
@@ -815,7 +823,7 @@ body {
 .custom-form input[type="file"],
 .custom-form select,
 .custom-form textarea {
-    width: 98%;
+    width: 95%;
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -938,6 +946,7 @@ body {
     font-size: 14px;
     margin-top: 10px;
 }
+
 /* Основной контейнер */
 .profile-container {
     display: flex;
@@ -951,15 +960,14 @@ body {
 .profile-menu {
     width: 200px;
     background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 15px;
 }
 
 .profile-menu ul {
     list-style: none;
     margin: 0;
-    padding: 0;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .profile-menu ul li {
@@ -1110,5 +1118,270 @@ body {
 }
 
 .toggle-password:hover {
+    color: #0056b3;
+}
+
+/* Документы */
+.document-content {
+    flex: 1;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Заголовки */
+.document-content h2,
+.document-content h3 {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+/* Форма загрузки файлов */
+.upload-form {
+    margin-bottom: 20px;
+}
+
+.btn-upload {
+    display: inline-block;
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-upload:hover {
+    background-color: #0056b3;
+}
+
+/* Список файлов */
+.file-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+}
+
+.file-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #555;
+}
+
+.file-item .file-icon {
+    font-size: 20px;
+}
+
+
+/* Архивная форма */
+.archive-form {
+    text-align: center;
+}
+
+.btn-archive {
+    display: inline-block;
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-archive:hover {
+    background-color: #0056b3;
+}
+
+/* Если нет файлов */
+.file-item.no-files {
+    text-align: center;
+    color: #999;
+    background-color: transparent;
+    border: none;
+}
+
+/* Заявки на поступление */
+.admission-content {
+    flex: 1;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.admission-content h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+table th,
+table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+}
+
+table th {
+    background-color: #f4f4f4;
+    color: #333;
+    font-weight: bold;
+}
+
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+table tr:hover {
+    background-color: #f1f1f1;
+}
+
+table a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+table a:hover {
+    text-decoration: underline;
+}
+
+/* Кнопки */
+.admission-button {
+    padding: 8px 12px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    background-color: #3498db;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.admission-button:hover {
+    background-color: #2980b9;
+    text-decoration: none;
+}
+
+/* Подробное описание каждой заявки */
+.admission-content-detail {
+    flex: 1;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+}
+
+.admission-content-detail h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+}
+
+.admission-content-detail h2 {
+    font-size: 20px;
+    margin-top: 20px;
+    color: #555;
+}
+
+.admission-content-detail p {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.admission-content-detail p strong {
+    color: #555;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+.file-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #333;
+}
+
+.file-item .file-icon {
+    margin-right: 10px;
+    font-size: 18px;
+    color: #3498db;
+}
+
+.no-files {
+    color: #999;
+    font-style: italic;
+}
+
+form {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+label {
+    font-size: 16px;
+    color: #333;
+    font-weight: bold;
+}
+
+select {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.admission-detail-button[type="submit"] {
+    padding: 10px 15px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    background-color: #3498db;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.admission-detail-button[type="submit"]:hover {
+    background-color: #2980b9;
+}
+
+.download-link {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.download-link:hover {
+    text-decoration: underline;
     color: #0056b3;
 }

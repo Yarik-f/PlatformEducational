@@ -1,0 +1,12 @@
+{% extends 'index.html' %}
+{% block title %}
+    <title>Документы</title>
+{% endblock %}
+{% block content %}
+    <div class="profile-container">
+        {% include 'auth/profile_menu.html' %}
+        <div class="archive-content">
+            <h2>Ваши файлы заархивированны и ждут подтверждения</h2>
+        </div>
+    </div>
+{% endblock %}

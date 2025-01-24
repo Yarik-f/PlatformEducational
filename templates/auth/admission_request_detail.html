@@ -1,0 +1,47 @@
+{% extends 'index.html' %}
+{% block content %}
+    <div class="profile-container">
+        {% include 'auth/profile_menu.html' %}
+        <div class="admission-content-detail">
+            <h1>Детали заявки</h1>
+            <p><strong>ФИО родителя:</strong> {{ admission_request.parent_full_name }}</p>
+            <p><strong>Паспорт родителя:</strong> {{ admission_request.parent_passport }}</p>
+            <p><strong>Email:</strong> {{ admission_request.parent_email }}</p>
+            <p><strong>ФИО
+                ученика:</strong> {{ admission_request.last_name }} {{ admission_request.first_name }} {{ admission_request.patronymic }}
+            </p>
+            <p><strong>Класс для поступления:</strong> {{ admission_request.grade_applied }}</p>
+            <p><strong>Статус:</strong> {{ admission_request.get_is_approved_display }}</p>
+
+            <h2>Загруженные документы</h2>
+            <ul>
+                {% for archive in uploaded_files %}
+                    <li class="file-item">
+                        <span class="file-icon">📦</span>
+                        {{ archive.archive.name }}
+                        <a href="{% url 'download_file' archive.id %}" class="download-link">
+                            {{ archive.archive.name }}
+                        </a>
+                    </li>
+                {% empty %}
+                    <li class="file-item no-files">Нет загруженных архивов.</li>
+                {% endfor %}
+            </ul>
+
+            <form method="post">
+                {% csrf_token %}
+                <label for="is_approved">Решение:</label>
+                <select name="is_approved" id="is_approved">
+                    <option value="pending" {% if admission_request.is_approved == 'pending' %}selected{% endif %}>На
+                        рассмотрении
+                    </option>
+                    <option value="yes" {% if admission_request.is_approved == 'yes' %}selected{% endif %}>Поступил
+                    </option>
+                    <option value="no" {% if admission_request.is_approved == 'no' %}selected{% endif %}>Отклонен
+                    </option>
+                </select>
+                <button type="submit" class="admission-detail-button">Сохранить</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
