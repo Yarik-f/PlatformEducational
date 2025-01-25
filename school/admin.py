@@ -31,10 +31,6 @@ class AdmissionRequestAdmin(admin.ModelAdmin):
     list_display = ['parent_full_name', 'last_name', 'first_name', 'grade_applied']
 
 
-# @admin.register(AdmissionFile)
-# class AdmissionFileAdmin(admin.ModelAdmin):
-#     pass
-
 @admin.register(Student)
 class StudentAdmin(admin.ModelAdmin):
     list_display = ['last_name', 'first_name', 'classroom']
@@ -51,4 +47,4 @@ class ClassAdmin(admin.ModelAdmin):
 
 @admin.register(Schedule)
 class ScheduleAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['school_class', 'day_of_week', 'subject', 'office', 'start_time', 'end_time']

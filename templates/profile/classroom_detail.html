@@ -1,0 +1,47 @@
+{% extends 'index.html' %}
+
+{% block content %}
+    <div class="profile-container">
+        {% include 'profile/profile_menu.html' %}
+
+        <div class="classroom-content-detail">
+            <div class="class-card">
+                <h2>Класс: <span class="class-name">{{ classroom.name }}</span></h2>
+                <p>Классный руководитель:
+                    {% if classroom.teacher %}
+                        {{ classroom.teacher.last_name }} {{ classroom.teacher.first_name }} {{ classroom.teacher.patronymic }}
+                    {% else %}
+                        <span class="no-teacher">Не назначен</span>
+                    {% endif %}
+                </p>
+                <p>Максимальное количество студентов: <strong>{{ classroom.max_students }}</strong></p>
+            </div>
+
+            <div class="students-list">
+                <h3>Список студентов:</h3>
+                <ul>
+                    {% for student in students %}
+                        <li>{{ student.last_name }} {{ student.first_name }} {{ student.patronymic }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="assign-teacher-form">
+                <h3>Назначить классного руководителя:</h3>
+                <form method="post">
+                    {% csrf_token %}
+                    <label for="teacher">Выберите учителя:</label>
+                    <select name="teacher" id="teacher">
+                        <option value="pending">На рассмотрении</option>
+                        {% for teacher in teachers %}
+                            <option value="{{ teacher.id }}" {% if classroom.teacher == teacher %}selected{% endif %}>
+                                {{ teacher.last_name }} {{ teacher.first_name }} {{ teacher.patronymic }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit">Назначить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

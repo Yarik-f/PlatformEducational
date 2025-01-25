@@ -1,0 +1,17 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block title %}
+    <title>Главная страница</title>
+{% endblock %}
+
+{% block content %}
+    <h1>Все классы</h1>
+    <div class="schedule-content">
+
+        {% for school_class in classes %}
+            <div class="card">
+                <a href="{% url 'schedule_class' school_class.id %}">{{ school_class.name }}</a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block title %}
+    <title>Главная страница</title>
+{% endblock %}
+
+{% block content %}
+        <div class="schedule-content">
+            <h1>Расписание для {{ school_class.name }}</h1>
+            <table class="schedule-table">
+                <thead>
+                <tr>
+                    <th>День</th>
+                    <th>Номер урока</th>
+                    <th>Предмет</th>
+                    <th>Учитель</th>
+                    <th>Начало урока</th>
+                    <th>Конец урока</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for entry in schedule %}
+                    <tr>
+                        <td>{{ entry.get_day_of_week_display }}</td>
+                        <td>{{ entry.lesson_number }}</td>
+                        <td>{{ entry.subject }}</td>
+                        <td>{{ entry.teacher.last_name }} {{ entry.teacher.first_name }} {{ entry.teacher.patronymic }}</td>
+                        <td>{{ entry.start_time|date:"H:i" }}</td>
+                        <td>{{ entry.end_time|date:"H:i" }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+{% endblock %}

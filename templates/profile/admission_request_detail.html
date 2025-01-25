@@ -1,7 +1,7 @@
 {% extends 'index.html' %}
 {% block content %}
     <div class="profile-container">
-        {% include 'auth/profile_menu.html' %}
+        {% include 'profile/profile_menu.html' %}
         <div class="admission-content-detail">
             <h1>Детали заявки</h1>
             <p><strong>ФИО родителя:</strong> {{ admission_request.parent_full_name }}</p>
@@ -19,7 +19,7 @@
                     <li class="file-item">
                         <span class="file-icon">📦</span>
                         {{ archive.archive.name }}
-                        <a href="{% url 'download_file' archive.id %}" class="download-link">
+                        <a href="{% url 'download_archive' archive.id %}" class="download-link">
                             {{ archive.archive.name }}
                         </a>
                     </li>

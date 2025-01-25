@@ -1385,3 +1385,328 @@ select {
     text-decoration: underline;
     color: #0056b3;
 }
+
+/* Список классов */
+.classroom-content {
+    flex: 1;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.classroom-content h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+}
+.classroom-button {
+    padding: 8px 12px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    background-color: #3498db;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.classroom-button:hover {
+    background-color: #2980b9;
+    text-decoration: none;
+}
+
+/* Детальный список классов */
+.classroom-content-detail {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+/* Карточка для информации о классе */
+.class-card {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.class-card h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.class-name {
+    color: #007bff;
+    font-weight: bold;
+}
+
+.class-card p {
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+.no-teacher {
+    color: #dc3545;
+    font-weight: bold;
+}
+
+/* Список студентов */
+.students-list {
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.students-list h3 {
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.students-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.students-list ul li {
+    padding: 10px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.students-list ul li:last-child {
+    border-bottom: none;
+}
+
+/* Форма назначения */
+.assign-teacher-form {
+    background-color: #f1f1f1;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.assign-teacher-form h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.assign-teacher-form label {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.assign-teacher-form select {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.assign-teacher-form button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.assign-teacher-form button:hover {
+    background-color: #0056b3;
+}
+
+/* Загрузка документов на сайт */
+.file-upload-container {
+    width: 100%;
+    max-width: 500px;
+    background: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.upload-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.upload-description {
+    font-size: 14px;
+    color: #777;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.upload-form .form-group {
+    margin-bottom: 15px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #555;
+}
+
+.upload-form input[type="file"],
+.upload-form select {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.upload-btn {
+    display: block;
+    width: 100%;
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-align: center;
+}
+
+.upload-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Таблица файлов */
+.uploaded-files-container {
+    width: 100%;
+    max-width: 600px;
+    background: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.files-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.files-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.files-table thead {
+    background-color: #f8f8f8;
+}
+
+.files-table th,
+.files-table td {
+    border: 1px solid #ddd;
+    text-align: left;
+    padding: 10px;
+    font-size: 14px;
+}
+
+.files-table th {
+    color: #555;
+}
+
+.files-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.files-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.file-link {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.file-link:hover {
+    color: #0056b3;
+}
+
+.no-files {
+    text-align: center;
+    color: #777;
+    font-style: italic;
+    font-size: 14px;
+    padding: 20px;
+}
+
+/* Рассписание */
+.schedule-content {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    gap: 20px;
+}
+
+.card {
+    width: 10%;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: scale(1.02);
+}
+
+.card a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+
+.card a:hover {
+    color: #007bff;
+}
+
+.schedule-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.schedule-table th, .schedule-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.schedule-table th {
+    background-color: #007bff;
+    color: white;
+}

@@ -1,0 +1,37 @@
+{% extends 'index.html' %}
+{% block content %}
+    <div class="profile-container">
+        {% include 'profile/profile_menu.html' %}
+        <div class="classroom-content">
+            <h1>Список классов</h1>
+            <table>
+                <thead>
+                <tr>
+                    <th>Номер класса</th>
+                    <th>Классный руководитель</th>
+                    <th>Действие</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for classroom in classrooms %}
+                    <tr>
+                        <td>{{ classroom.name }}</td>
+                        {% if classroom.teacher %}
+                            <td>{{ classroom.teacher.last_name }} {{ classroom.teacher.first_name }} {{ classroom.teacher.patronymic }}</td>
+                        {% else %}
+                            <td>Не назначен</td>
+                        {% endif %}
+                        <td>
+                            <a href="{% url 'classroom_detail' classroom.pk %}" class="classroom-button">Просмотреть</a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="4">Классов нет.</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

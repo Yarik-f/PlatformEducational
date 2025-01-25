@@ -1,0 +1,122 @@
+{% extends 'index.html' %}
+{% block title %}
+    <title>Документы</title>
+{% endblock %}
+{% block content %}
+    <div class="profile-container">
+        {% include 'profile/profile_menu.html' %}
+
+        <div class="file-upload-tabs">
+            <ul class="tabs">
+                <li class="tab-link active" data-tab="upload-tab">Загрузка файлов</li>
+                <li class="tab-link" data-tab="schedule-tab">Импорт расписания</li>
+            </ul>
+
+            <div id="upload-tab" class="tab-content active">
+                <div class="file-upload-container">
+                    <h2 class="upload-title">Загрузка файлов</h2>
+                    <p class="upload-description">Эта функция доступна только руководству</p>
+                    <form method="post" enctype="multipart/form-data" class="upload-form">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="id_file" class="form-label">Выберите файл:</label>
+                            {{ file_form.file }}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_file_type" class="form-label">Тип документа:</label>
+                            {{ file_form.file_type }}
+                        </div>
+                        <button type="submit" class="upload-btn">Загрузить</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="uploaded-files-container">
+                <h3 class="files-title">Список загруженных файлов</h3>
+                <table class="files-table">
+                    <thead>
+                    <tr>
+                        <th>Файл</th>
+                        <th>Тип документа</th>
+                        <th>Дата загрузки</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for file in files %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'download_file' file.id %}" class="file-link" target="_blank">
+                                    {{ file.file.name }}
+                                </a>
+                            </td>
+                            <td>{{ file.get_file_type_display }}</td>
+                            <td>{{ file.uploaded_at|date:"d.m.Y H:i" }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="3" class="no-files">Файлы ещё не загружены.</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="schedule-tab" class="tab-content">
+            <div class="schedule-upload-container">
+                <h2 class="upload-title">Импорт расписания</h2>
+                <p class="upload-description">Загрузите Excel-файл с расписанием</p>
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="tab" value="schedule-tab">
+                    <div class="form-group">
+                        <label for="id_schedule_file" class="form-label">Выберите файл:</label>
+                        <input type="file" name="excel_file" id="id_schedule_file" required>
+                    </div>
+                    <button type="submit" class="upload-btn">Импортировать</button>
+                </form>
+            </div>
+
+            <div class="schedule-export-container">
+                <h2 class="upload-title">Экспорт расписания</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="tab" value="schedule-tab">
+                    <button type="submit" name="export_schedule" value="1" class="export-btn">Экспортировать
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% if messages %}
+            <div class="messages-container">
+                {% for message in messages %}
+                    <div class="message {{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabs = document.querySelectorAll('.tab-link');
+            const contents = document.querySelectorAll('.tab-content');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(item => item.classList.remove('active'));
+                    contents.forEach(content => content.classList.remove('active'));
+
+                    tab.classList.add('active');
+                    const tabContent = document.getElementById(tab.dataset.tab);
+                    tabContent.classList.add('active');
+                });
+            });
+
+            const defaultTab = document.querySelector('.tab-link[data-tab="upload-tab"]');
+            if (defaultTab) {
+                defaultTab.click();
+            }
+        });
+    </script>
+{% endblock %}

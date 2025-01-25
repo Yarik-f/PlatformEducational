@@ -15,16 +15,17 @@
         <nav class="navbar">
             <ul>
                 <li><a href="{% url 'home' %}">Главная</a></li>
+                <li><a href="{% url 'schedule' %}">Расписание</a></li>
                 <li><a href="{% url 'school_life' 'news' %}">Школьная жизнь</a></li>
                 <li><a href="{% url 'teacher' %}">Преподаватели</a></li>
                 <li><a href="{% url 'contacts' %}">Контакты</a></li>
-                {% if user.is_authenticated  %}
+                {% if user.is_authenticated %}
                     <li><a href="{% url 'profile' %}">Профиль</a></li>
                 {% else %}
                     <li><a href="{% url 'forms' %}">Заявки</a></li>
                     <li><a href="{% url 'login' %}">Войти-></a></li>
                 {% endif %}
-                
+
             </ul>
         </nav>
     </div>

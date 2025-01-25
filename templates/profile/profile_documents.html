@@ -4,7 +4,7 @@
 {% endblock %}
 {% block content %}
     <div class="profile-container">
-        {% include 'auth/profile_menu.html' %}
+        {% include 'profile/profile_menu.html' %}
         <div class="document-content">
             <h2>Ваши документы</h2>
             {% if role == 'Guest' %}
@@ -23,7 +23,7 @@
                             <span class="file-icon">📄</span>
                             {{ file.file.name }}
                             {% if role != 'Guest' %}
-                                <a href="{% url 'download_file' archive.id %}" class="download-link">
+                                <a href="{% url 'download_archive' archive.id %}" class="download-link">
                                     Скачать
                                 </a>
                             {% endif %}
@@ -40,7 +40,7 @@
                             <span class="file-icon">📦</span>
                             {{ archive.archive.name }}
                             {% if role != 'Guest' %}
-                                <a href="{% url 'download_file' archive.id %}" class="download-link">
+                                <a href="{% url 'download_archive' archive.id %}" class="download-link">
                                     Скачать
                                 </a>
                             {% endif %}

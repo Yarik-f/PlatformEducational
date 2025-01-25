@@ -38,3 +38,20 @@ class SingleFileUploadForm(forms.ModelForm):
     class Meta:
         model = UploadedFile
         fields = ['file']
+
+class FileUploadForm(forms.ModelForm):
+    class Meta:
+        model = UploadedFile
+        fields = ['file', 'file_type']
+        widgets = {
+            'file': forms.FileInput(attrs={'class': 'form-control'}),
+            'file_type': forms.Select(attrs={'class': 'form-control'}),
+        }
+class ExcelUploadForm(forms.Form):
+    excel_file = forms.FileField(required=True)
+
+    def clean_excel_file(self):
+        excel_file = self.cleaned_data.get('excel_file')
+        if not excel_file.name.endswith('.xlsx'):
+            raise forms.ValidationError("Пожалуйста, загрузите файл формата .xlsx.")
+        return excel_file

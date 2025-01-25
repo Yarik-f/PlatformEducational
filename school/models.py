@@ -242,6 +242,7 @@ class Student(models.Model):
 class UploadedFile(models.Model):
     APPROVED_CHOICES = [
         ('admission', 'Поступление'),
+        ('management', 'Руководство '),
         ('student', 'Студентам'),
         ('teacher', 'Учителям'),
     ]
@@ -278,9 +279,11 @@ class Schedule(models.Model):
         ('friday', 'Пятница'),
         ('saturday', 'Суббота'),
     ]
+    lesson_number = models.PositiveSmallIntegerField(verbose_name='Номер урока', null=True)
     school_class = models.ForeignKey(Class, on_delete=models.CASCADE, verbose_name="Класс")
     day_of_week = models.CharField(max_length=20, choices=DAY_OF_WEEK_CHOICES, verbose_name="День недели")
-    subject = models.CharField(max_length=100, verbose_name="Предмет")
+    subject = models.ForeignKey('Subject', on_delete=models.CASCADE, null=True,)
+    office = models.PositiveIntegerField(verbose_name="Кабинет", null=True)
     teacher = models.ForeignKey(
         'Teacher', on_delete=models.SET_NULL, blank=True, null=True, verbose_name="Учитель"
     )

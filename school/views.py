@@ -2,22 +2,38 @@ import os
 import zipfile
 from mimetypes import guess_type
 
+import openpyxl
 from django.contrib import messages
 from django.contrib.auth import login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.db.models import Count
-from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.http import HttpResponse, HttpResponseRedirect, Http404, FileResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from django.urls import reverse_lazy, reverse
-from django.utils.decorators import method_decorator
-from django.contrib.auth import views as auth_views
+from django.urls import reverse
 from django.utils.encoding import smart_str
 from rest_framework import viewsets
 
-from school.forms import QuestionForm, AdmissionRequestForm, SingleFileUploadForm
+from school.forms import QuestionForm, AdmissionRequestForm, SingleFileUploadForm, FileUploadForm, ExcelUploadForm
 from school.models import *
 from school.serializers import TeacherSerializer
+from school.utils import export_schedule_to_excel, import_schedule_from_excel_with_update
+
+
+def access_role(request):
+    if request.user.groups.filter(name='Teachers').exists():
+        profile = Teacher.objects.get(user=request.user)
+        role = 'Teacher'
+    elif request.user.groups.filter(name='Directors').exists():
+        profile = Teacher.objects.get(user=request.user)
+        role = 'Director'
+    elif request.user.groups.filter(name='Students').exists():
+        profile = Student.objects.get(user=request.user)
+        role = 'Student'
+    else:
+        profile = AdmissionRequest.objects.get(user=request.user)
+        role = 'Guest'
+    return profile, role
 
 
 def home_view(request):
@@ -129,34 +145,22 @@ def logout_view(request):
 @login_required
 def profile_view(request):
     user = request.user
-
-    if user.groups.filter(name='Teachers').exists():
-        profile = Teacher.objects.get(user=user)
-        role = 'Teacher'
-    elif user.groups.filter(name='Directors').exists():
-        profile = Teacher.objects.get(user=user)
-        role = 'Director'
-    elif user.groups.filter(name='Students').exists():
-        profile = Student.objects.get(user=user)
-        role = 'Student'
-    else:
-        profile = AdmissionRequest.objects.get(user=user)
-        role = 'Guest'
+    profile = access_role(request)[0]
+    role = access_role(request)[1]
+    for key, i in Schedule.DAY_OF_WEEK_CHOICES:
+        print(key)
 
     context = {
         'user': user,
         'profile': profile,
         'role': role
     }
-    return render(request, 'auth/profile.html', context)
+    return render(request, 'profile/profile.html', context)
 
 
 @login_required
 def upload_file(request):
-    if request.user.groups.filter(name='Students').exists():
-        role = 'Student'
-    else:
-        role = 'Guest'
+    role = access_role(request)[1]
 
     if request.method == "POST":
         form = SingleFileUploadForm(request.POST, request.FILES)
@@ -172,7 +176,7 @@ def upload_file(request):
     user_files = UploadedFile.objects.filter(user=request.user, file_type='admission')
     user_archive = DocumentArchive.objects.filter(user=request.user)
 
-    return render(request, 'auth/profile_documents.html',
+    return render(request, 'profile/profile_documents.html',
                   {
                       'form': form,
                       'user_files': user_files,
@@ -215,15 +219,15 @@ def archive_files(request):
 
 @login_required
 def admission_requests_list(request):
-    role = 'Director'
+    role = access_role(request)[1]
     admission_requests = AdmissionRequest.objects.all()
-    return render(request, 'auth/admission_requests_list.html',
+    return render(request, 'profile/admission_requests_list.html',
                   {'admission_requests': admission_requests, 'role': role})
 
 
 @login_required
 def admission_request_detail(request, pk):
-    role = 'Director'
+    role = access_role(request)[1]
     admission_request = get_object_or_404(AdmissionRequest, pk=pk)
     uploaded_files = DocumentArchive.objects.filter(user=admission_request.user)
 
@@ -291,7 +295,7 @@ def admission_request_detail(request, pk):
             admission_request.delete()
             return redirect('admission_requests_list')
 
-    return render(request, 'auth/admission_request_detail.html', {
+    return render(request, 'profile/admission_request_detail.html', {
         'admission_request': admission_request,
         'uploaded_files': uploaded_files,
         'role': role
@@ -299,8 +303,38 @@ def admission_request_detail(request, pk):
 
 
 @login_required
-def download_file(request, file_id):
-    document = get_object_or_404(DocumentArchive, id=file_id)
+def classroom_list(request):
+    role = access_role(request)[1]
+    classrooms = Class.objects.all()
+    return render(request, 'profile/classroom_list.html',
+                  {'classrooms': classrooms, 'role': role})
+
+
+@login_required
+def classroom_detail(request, class_id):
+    role = access_role(request)[1]
+    classroom = get_object_or_404(Class, id=class_id)
+    students = Student.objects.filter(classroom=classroom)
+    teachers = Teacher.objects.all()
+
+    if request.method == 'POST':
+        teacher_id = request.POST.get('teacher')
+        if teacher_id:
+            teacher = Teacher.objects.get(id=teacher_id)
+            classroom.teacher = teacher
+            classroom.save()
+
+    return render(request, 'profile/classroom_detail.html', {
+        'classroom': classroom,
+        'students': students,
+        'teachers': teachers,
+        'role': role
+    })
+
+
+@login_required
+def download_archive(request, archive_id):
+    document = get_object_or_404(DocumentArchive, id=archive_id)
 
     if document.user != request.user and not request.user.groups.filter(name='Directors').exists():
         return HttpResponse("У вас нет доступа к этому файлу.", status=403)
@@ -317,18 +351,28 @@ def download_file(request, file_id):
     except FileNotFoundError:
         raise Http404("Файл не найден.")
 
+
+@login_required
+def download_files(request, file_id):
+    file_instance = get_object_or_404(UploadedFile, id=file_id)
+
+    if file_instance.file_type == "management" and not request.user.is_staff:
+        raise Http404("У вас нет доступа к этому файлу.")
+    if file_instance.file_type == "teacher" and not request.user.groups.filter(
+            name__in=["Teachers", "Directors"]).exists():
+        raise Http404("У вас нет доступа к этому файлу.")
+    if file_instance.file_type == "student" and not request.user.is_authenticated:
+        raise Http404("Только зарегистрированные пользователи могут скачать этот файл.")
+
+    response = FileResponse(file_instance.file.open(), as_attachment=True)
+    response['Content-Disposition'] = f'attachment; filename="{file_instance.file.name}"'
+    return response
+
+
 @login_required
 def custom_password_change(request):
-
-    if request.user.groups.filter(name='Teachers').exists():
-        role = 'Teacher'
-    elif request.user.groups.filter(name='Directors').exists():
-        role = 'Director'
-    elif request.user.groups.filter(name='Students').exists():
-        role = 'Student'
-    else:
-        role = 'Guest'
-
+    role = access_role(request)[1]
+    print(role)
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():
@@ -341,10 +385,68 @@ def custom_password_change(request):
     else:
         form = PasswordChangeForm(request.user)
 
-    return render(request, 'auth/password_change.html', {
+    return render(request, 'profile/password_change.html', {
         'form': form,
         'role': role,
     })
+
+
+def schedule(request):
+    classes = Class.objects.all()
+    return render(request, 'schedule/schedule.html', {'classes': classes})
+
+
+def schedule_class(request, class_id):
+    school_class = Class.objects.get(id=class_id)
+
+    schedule = Schedule.objects.filter(school_class=school_class).order_by('day_of_week', 'lesson_number')
+    return render(request, 'schedule/day_schedule.html', {
+        'school_class': school_class,
+        'schedule': schedule
+    })
+
+
+@login_required
+def unified_view(request):
+    active_tab = request.POST.get('tab', 'upload-tab')
+    role = access_role(request)[1]
+
+    if request.method == 'POST':
+        print(f"POST received with active_tab: {active_tab}")
+        if active_tab == 'upload-tab':
+            form = FileUploadForm(request.POST, request.FILES)
+            if form.is_valid():
+                file_instance = form.save(commit=False)
+                file_instance.user = request.user
+                file_instance.save()
+                messages.success(request, "Файл успешно загружен!")
+                return redirect(f'{request.path}?tab=upload-tab')
+            else:
+                messages.error(request, "Ошибка при загрузке файла. Проверьте данные.")
+        elif active_tab == 'schedule-tab':
+            if 'excel_file' in request.FILES:
+                excel_file = request.FILES['excel_file']
+                success, message = import_schedule_from_excel_with_update(excel_file)
+                if success:
+                    messages.success(request, message)
+                else:
+                    messages.error(request, message)
+                return redirect(f'{request.path}?tab=schedule-tab')
+            elif 'export_schedule' in request.POST:  # Экспорт расписания
+                return export_schedule_to_excel()
+
+    file_form = FileUploadForm()
+    schedule_form = ExcelUploadForm()
+    files = UploadedFile.objects.all()
+
+    return render(request, 'profile/upload_files.html', {
+        'active_tab': active_tab,
+        'file_form': file_form,
+        'schedule_form': schedule_form,
+        'files': files,
+        'role': role,
+    })
+
 
 class TeacherViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Teacher.objects.all()
