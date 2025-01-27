@@ -14,8 +14,7 @@
         <div class="main-content">
             <div class="document-list-container">
                 <h1>Список документов</h1>
-
-                <!-- Фильтр по категориям -->
+            
                 <form method="get" class="filter-form">
                     <label for="category">Категория:</label>
                     <select name="category" id="category" onchange="this.form.submit()">
@@ -27,8 +26,7 @@
                         {% endfor %}
                     </select>
                 </form>
-
-                <!-- Список документов -->
+            
                 <div class="document-list">
                     {% for document in documents %}
                         <div class="document-card">

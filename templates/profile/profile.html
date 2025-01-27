@@ -13,7 +13,7 @@
         <div class="profile-content">
             <h1>Ваши данные</h1>
             <div class="profile-card">
-                {% if role == 'Teacher' or role == 'Director' %}
+                {% if role == 'Teacher' or role == 'Director' or role == 'Management' %}
                     <img src="
                             
                             {% if profile.image %}{{ profile.image.url }}{% else %}/static/images/default-avatar.png{% endif %}"

@@ -581,9 +581,10 @@ select {
 
 /* Загрузка документов на сайт */
 /* Меню вкладок */
-.div{
+.div {
     gap: 20px;
 }
+
 .tabs {
     display: flex;
     list-style: none;
@@ -728,4 +729,142 @@ select {
 
 .upload-btn:hover, .export-btn:hover {
     background: #0056b3;
+}
+
+/* Учительские документы */
+/* Общие стили для контейнера */
+
+
+/* Макет страницы */
+.documents-layout {
+    display: flex;
+    gap: 20px;
+}
+
+/* Сайдбар фильтров */
+.filter-sidebar {
+    width: 250px;
+    background: #ffffff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.filter-sidebar h2 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #495057;
+    margin-bottom: 15px;
+}
+
+.filter-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-group label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #495057;
+    margin-bottom: 5px;
+}
+
+.filter-group select {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    background: #ffffff;
+    transition: border-color 0.3s;
+}
+
+.filter-group select:focus {
+    border-color: #4a90e2;
+    box-shadow: 0 0 4px rgba(74, 144, 226, 0.5);
+}
+
+/* Основной контент */
+.documents-content {
+    flex: 1;
+}
+
+/* Сетка карточек */
+.document-card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+}
+
+/* Карточка документа */
+.document-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.document-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.document-card-header {
+    margin-bottom: 15px;
+}
+
+.document-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #343a40;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.document-card-body {
+    font-size: 14px;
+    color: #495057;
+    line-height: 1.6;
+}
+
+.document-card-body p {
+    margin: 5px 0;
+}
+
+.document-card-body strong {
+    color: #212529;
+}
+
+/* Кнопка "Скачать" */
+.download-button {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 15px;
+    font-size: 14px;
+    color: #ffffff;
+    background: #007bff;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    text-align: center;
+}
+
+.download-button:hover {
+    background: #0056b3;
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+}
+
+/* Сообщение об отсутствии документов */
+.no-documents {
+    text-align: center;
+    font-size: 16px;
+    color: #868e96;
+    margin-top: 20px;
 }

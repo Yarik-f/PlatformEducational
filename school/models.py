@@ -264,7 +264,7 @@ class Student(models.Model):
                                   related_name="students")
 
     def __str__(self):
-        return f"{self.last_name} {self.first_name} {self.classroom.name}"
+        return f"{self.last_name} {self.first_name} {self.classroom}"
 
 
 class UploadedFile(models.Model):

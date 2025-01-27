@@ -3,7 +3,9 @@
         <li><a href="{% url 'profile' %}">Ваши данные</a></li>
         {% if role == 'Guest' or role == 'Student' %}
             <li><a href="{% url 'upload_file' %}">Документы</a></li>
-        {% elif role == 'Director' %}
+        {% elif role == 'Teacher' %}
+            <li><a href="{% url 'teacher_documents' %}">Документы</a></li>
+        {% elif role == 'Director' or role == 'Management' %}
             <li><a href="{% url 'admission_requests_list' %}">Поступление</a></li>
             <li><a href="{% url 'classroom_list' %}">Классы</a></li>
             <li><a href="{% url 'director_file' %}">Загрузка документов</a></li>

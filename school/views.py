@@ -2,7 +2,6 @@ import os
 import zipfile
 from mimetypes import guess_type
 
-import openpyxl
 from django.contrib import messages
 from django.contrib.auth import login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
@@ -12,10 +11,9 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404, FileRespons
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.utils.encoding import smart_str
-from rest_framework import status, viewsets
+from rest_framework import viewsets
 from rest_framework.exceptions import ValidationError
-from rest_framework.response import Response
-from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
+from rest_framework.viewsets import ReadOnlyModelViewSet
 
 from school.forms import QuestionForm, AdmissionRequestForm, SingleFileUploadForm, FileUploadForm, ExcelUploadForm, \
     ActivityRegistrationForm
@@ -32,6 +30,9 @@ def access_role(request):
     elif request.user.groups.filter(name='Directors').exists():
         profile = Teacher.objects.get(user=request.user)
         role = 'Director'
+    elif request.user.groups.filter(name='Managements').exists():
+        profile = Teacher.objects.get(user=request.user)
+        role = 'Management'
     elif request.user.groups.filter(name='Students').exists():
         profile = Student.objects.get(user=request.user)
         role = 'Student'
@@ -375,7 +376,7 @@ def classroom_detail(request, class_id):
 def download_archive(request, archive_id):
     document = get_object_or_404(DocumentArchive, id=archive_id)
 
-    if document.user != request.user and not request.user.groups.filter(name='Directors').exists():
+    if document.user != request.user and not request.user.groups.filter(name__in=['Directors', 'Managements']).exists():
         return HttpResponse("У вас нет доступа к этому файлу.", status=403)
 
     file_path = document.archive.path
@@ -393,7 +394,6 @@ def download_archive(request, archive_id):
 
 @login_required
 def download_files(request, file_id):
-
     file_instance = get_object_or_404(UploadedFile, id=file_id)
 
     if file_instance.file_type == "management" and not request.user.is_staff:
@@ -487,10 +487,8 @@ def unified_view(request):
 
 
 def document_list(request):
-    # Получение всех документов
     documents = UploadedFile.objects.all()
 
-    # Фильтр по категории из GET-запроса
     category_filter = request.GET.get('category')
     if category_filter:
         documents = documents.filter(file_type=category_filter)
@@ -523,10 +521,13 @@ def paid_service_detail(request, pk):
     service = get_object_or_404(AdditionalActivity, pk=pk)
     return render(request, 'about_school/paid_services/paid_service_detail.html', {'service': service})
 
+
 def awards_and_licenses(request):
     awards = Award.objects.all().order_by('-created_at')
     licenses = License.objects.all().order_by('-created_at')
-    return render(request, 'about_school/awards_and_licenses/awards_and_licenses.html', {'awards': awards, 'licenses': licenses})
+    return render(request, 'about_school/awards_and_licenses/awards_and_licenses.html',
+                  {'awards': awards, 'licenses': licenses})
+
 
 def register_activity(request):
     if request.method == 'POST':
@@ -545,6 +546,55 @@ def register_activity(request):
         'form': form,
         'activities': activities
     })
+
+
+def teacher_documents(request):
+    role = access_role(request)[1]
+    selected_category = request.GET.get('category', '')
+    selected_access = request.GET.get('access', '')
+
+    category_translations = {
+        'reports': 'Отчёты',
+        'guides': 'Руководства',
+        'assignments': 'Задания',
+    }
+
+    access_level_translations = {
+        'all': 'Все',
+        'students': 'Студенты',
+        'teachers': 'Учителя',
+    }
+
+    categories = UploadedFile.objects.values_list('file_type', flat=True).distinct()
+    categories = {cat: category_translations.get(cat, cat) for cat in categories}
+
+    access_levels = {key: access_level_translations[key] for key in access_level_translations}
+
+    documents = UploadedFile.objects.filter(access_level__in=['all', 'students', 'teachers'])
+
+
+    if selected_category:
+        selected_category_key = next((key for key, val in category_translations.items() if val == selected_category),
+                                     None)
+        if selected_category_key:
+            documents = documents.filter(file_type=selected_category_key)
+
+    if selected_access:
+        selected_access_key = next((key for key, val in access_level_translations.items() if val == selected_access),
+                                   None)
+        if selected_access_key:
+            documents = documents.filter(access_level=selected_access_key)
+
+    return render(request, 'profile/profile_teacher_documents.html', {
+        'documents': documents,
+        'categories': categories,
+        'access_levels': access_levels,
+        'selected_category': selected_category,
+        'selected_access': selected_access,
+        'role': role
+    })
+
+
 class ScheduleViewSet(ReadOnlyModelViewSet):
     queryset = Schedule.objects.all()
     serializer_class = ScheduleSerializer
@@ -573,6 +623,7 @@ class TeacherViewSet(ReadOnlyModelViewSet):
 class AdditionalActivityViewSet(ReadOnlyModelViewSet):
     queryset = AdditionalActivity.objects.select_related('teacher').prefetch_related('documents')
     serializer_class = AdditionalActivitySerializer
+
 
 class AdditionalActivityRegistrationViewSet(viewsets.ModelViewSet):
     queryset = AdditionalActivityRegistration.objects.all()

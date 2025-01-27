@@ -1,0 +1,69 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block title %}
+    <title>Документы для учителей</title>
+{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="profile-container">
+        {% include 'profile/profile_menu.html' %}
+        <div class="documents-teacher-container">
+            <h1>Документы для учителей</h1>
+            <div class="documents-layout">
+
+                <aside class="filter-sidebar">
+                    <form method="GET" class="filter-form">
+                        <h2>Фильтры</h2>
+                        <div class="filter-group">
+                            <label for="category-select">Категория:</label>
+                            <select name="category" id="category-select" onchange="this.form.submit()">
+                                <option value="">Все категории</option>
+                                {% for key, category in categories.items %}
+                                    <option value="{{ category }}"
+                                            {% if selected_category == category %}selected{% endif %}>
+                                        {{ category }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="access-select">Доступ:</label>
+                            <select name="access" id="access-select" onchange="this.form.submit()">
+                                <option value="">Все уровни доступа</option>
+                                {% for key, access in access_levels.items %}
+                                    <option value="{{ access }}" {% if selected_access == access %}selected{% endif %}>
+                                        {{ access }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </form>
+                </aside>
+
+                <main class="documents-content">
+                    {% if documents %}
+                        <div class="document-card-grid">
+                            {% for document in documents %}
+                                <div class="document-card">
+                                    <div class="document-card-header">
+                                        <h2 class="document-title">{{ document.name_file|slice:"18:" }}</h2>
+                                    </div>
+                                    <div class="document-card-body">
+                                        <p>Категория: <strong>{{ document.file_type }}</strong></p>
+                                        <p>Уровень доступа: <strong>{{ document.access_level }}</strong></p>
+                                        <p>Дата загрузки: <strong>{{ document.uploaded_at|date:"d.m.Y" }}</strong></p>
+                                        <a href="{{ document.file.url }}" download class="download-button">Скачать</a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p class="no-documents">Документы отсутствуют.</p>
+                    {% endif %}
+                </main>
+            </div>
+        </div>
+    </div>
+{% endblock %}
