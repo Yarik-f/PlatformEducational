@@ -20,10 +20,12 @@
                 <li><a href="{% url 'schedule' %}">Расписание</a></li>
                 <li><a href="{% url 'school_life' 'news' %}">Школьная жизнь</a></li>
                 <li><a href="{% url 'contacts' %}">Основные сведения</a></li>
+                <li><a href="{% url 'forms' %}">Заявки</a></li>
+                <li><a href="{% url 'register_activity' %}">Платные услуги</a></li>
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'profile' %}">Профиль</a></li>
                 {% else %}
-                    <li><a href="{% url 'forms' %}">Заявки</a></li>
+
                     <li><a href="{% url 'login' %}">Войти-></a></li>
                 {% endif %}
 
@@ -31,9 +33,11 @@
         </nav>
     </div>
 </header>
+<main>
+    {% block content %}
+    {% endblock %}
+</main>
 
-{% block content %}
-{% endblock %}
 
 <footer class="main-footer">
     <div class="container">

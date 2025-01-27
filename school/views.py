@@ -12,14 +12,16 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404, FileRespons
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.utils.encoding import smart_str
-from rest_framework import status
+from rest_framework import status, viewsets
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 
-from school.forms import QuestionForm, AdmissionRequestForm, SingleFileUploadForm, FileUploadForm, ExcelUploadForm
+from school.forms import QuestionForm, AdmissionRequestForm, SingleFileUploadForm, FileUploadForm, ExcelUploadForm, \
+    ActivityRegistrationForm
 from school.models import *
-from school.serializers import TeacherSerializer, ScheduleSerializer, AdditionalActivitySerializer
+from school.serializers import TeacherSerializer, ScheduleSerializer, AdditionalActivitySerializer, \
+    AdditionalActivityRegistrationSerializer
 from school.utils import export_schedule_to_excel, import_schedule_from_excel_with_update
 
 
@@ -391,6 +393,7 @@ def download_archive(request, archive_id):
 
 @login_required
 def download_files(request, file_id):
+
     file_instance = get_object_or_404(UploadedFile, id=file_id)
 
     if file_instance.file_type == "management" and not request.user.is_staff:
@@ -441,7 +444,11 @@ def unified_view(request):
                 file_instance.user = request.user
                 file_instance.save()
 
-                # Привязываем файл к выбранной услуге, если она указана
+                if not file_instance.name_file:
+                    file_instance.name_file = file_instance.file.name
+
+                file_instance.save()
+
                 activity = form.cleaned_data.get('activity')
                 if activity:
                     activity.documents = file_instance
@@ -479,6 +486,65 @@ def unified_view(request):
     })
 
 
+def document_list(request):
+    # Получение всех документов
+    documents = UploadedFile.objects.all()
+
+    # Фильтр по категории из GET-запроса
+    category_filter = request.GET.get('category')
+    if category_filter:
+        documents = documents.filter(file_type=category_filter)
+
+    user = request.user
+    if not user.is_superuser:
+        if user.groups.filter(name='students').exists():
+            documents = documents.filter(access_level__in=['all', 'students'])
+        elif user.groups.filter(name='teachers').exists():
+            documents = documents.filter(access_level__in=['all', 'teachers'])
+        elif user.groups.filter(name='management').exists():
+            documents = documents.filter(access_level__in=['all', 'management'])
+        else:
+            documents = documents.filter(access_level='all')
+
+    categories = UploadedFile.CATEGORY_CHOICES
+
+    return render(request, 'about_school/document_list/document_list.html', {
+        'documents': documents,
+        'categories': categories,
+    })
+
+
+def paid_services(request):
+    services = AdditionalActivity.objects.all()
+    return render(request, 'about_school/paid_services/paid_services.html', {'services': services})
+
+
+def paid_service_detail(request, pk):
+    service = get_object_or_404(AdditionalActivity, pk=pk)
+    return render(request, 'about_school/paid_services/paid_service_detail.html', {'service': service})
+
+def awards_and_licenses(request):
+    awards = Award.objects.all().order_by('-created_at')
+    licenses = License.objects.all().order_by('-created_at')
+    return render(request, 'about_school/awards_and_licenses/awards_and_licenses.html', {'awards': awards, 'licenses': licenses})
+
+def register_activity(request):
+    if request.method == 'POST':
+        form = ActivityRegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Вы успешно записались на услугу!")
+            return redirect('register_activity')
+        else:
+            messages.error(request, "Ошибка при записи на услугу. Проверьте введённые данные.")
+    else:
+        form = ActivityRegistrationForm()
+
+    activities = AdditionalActivity.objects.all()
+    return render(request, 'activites/register_activity.html', {
+        'form': form,
+        'activities': activities
+    })
 class ScheduleViewSet(ReadOnlyModelViewSet):
     queryset = Schedule.objects.all()
     serializer_class = ScheduleSerializer
@@ -507,3 +573,7 @@ class TeacherViewSet(ReadOnlyModelViewSet):
 class AdditionalActivityViewSet(ReadOnlyModelViewSet):
     queryset = AdditionalActivity.objects.select_related('teacher').prefetch_related('documents')
     serializer_class = AdditionalActivitySerializer
+
+class AdditionalActivityRegistrationViewSet(viewsets.ModelViewSet):
+    queryset = AdditionalActivityRegistration.objects.all()
+    serializer_class = AdditionalActivityRegistrationSerializer

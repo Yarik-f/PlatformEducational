@@ -48,6 +48,25 @@ class AdditionalActivity(models.Model):
     def __str__(self):
             return self.name
 
+from django.db import models
+
+class AdditionalActivityRegistration(models.Model):
+    name = models.CharField(max_length=100, verbose_name="Имя")
+    email = models.EmailField(verbose_name="Email")
+    phone = models.CharField(max_length=15, verbose_name="Телефон")
+    activity = models.ForeignKey(
+        'AdditionalActivity',
+        on_delete=models.CASCADE,
+        related_name='registrations',
+        verbose_name="Платная услуга"
+    )
+    date_registered = models.DateTimeField(auto_now_add=True, verbose_name="Дата регистрации")
+    notes = models.TextField(blank=True, null=True, verbose_name="Примечания")
+
+    def __str__(self):
+        return f"{self.name} - {self.activity.name}"
+
+
 class Teacher(models.Model):
     POSITION_CHOICES = [
         ('director', 'Директор'),
@@ -249,7 +268,6 @@ class Student(models.Model):
 
 
 class UploadedFile(models.Model):
-    # Категории документов
     CATEGORY_CHOICES = [
         ('local_regulations', 'Локальные нормативные акты'),
         ('paid_service', 'Платные услуги'),

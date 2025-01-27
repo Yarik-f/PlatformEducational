@@ -6,6 +6,7 @@ router = DefaultRouter()
 router.register(r'teachers', views.TeacherViewSet, basename='teachers')
 router.register(r'schedule', views.ScheduleViewSet, basename='schedule')
 router.register(r'activities', views.AdditionalActivityViewSet, basename='activity')
+router.register(r'registrations', views.AdditionalActivityRegistrationViewSet, basename='registration')
 urlpatterns = [
     path('api/', include(router.urls)),
     path('', views.home_view, name='home'),
@@ -18,6 +19,11 @@ urlpatterns = [
 
     path('about_school/contacts/', views.contacts_view, name='contacts'),
     path('about_school/facility/', views.facility_list, name='facility'),
+    path('about_school/document_all/', views.document_list, name='document_list'),
+    path('about_school/paid-services/', views.paid_services, name='paid_services'),
+    path('about_school/paid-services/<int:pk>/', views.paid_service_detail, name='paid_service_detail'),
+    path('about_school/awards-and-licenses/', views.awards_and_licenses, name='awards_and_licenses'),
+    path('register_activity/', views.register_activity, name='register_activity'),
     path('forms/', views.forms_view, name='forms'),
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),

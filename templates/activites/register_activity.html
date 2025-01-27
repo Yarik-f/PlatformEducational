@@ -1,0 +1,139 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block title %}
+    <title>Запись на платные услуги</title>
+{% endblock %}
+
+{% block extra_css %}
+    <style>
+        .activity-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form {
+            margin-bottom: 30px;
+        }
+
+        .form p {
+            margin-bottom: 15px;
+        }
+
+        .form label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form input, 
+        .form select, 
+        .form textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        .form textarea {
+            resize: none;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            background: #007bff;
+            border: none;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background: #0056b3;
+        }
+
+        .activity-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .activity-list li {
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .activity-list li strong {
+            font-size: 18px;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .activity-list li p {
+            margin: 0;
+            color: #555;
+        }
+
+        .messages {
+            margin-top: 20px;
+        }
+
+        .messages .message {
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .messages .message.success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .messages .message.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="activity-container">
+    <h1 class="page-title">Запись на платные услуги</h1>
+
+    <form method="post" class="form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn">Записаться</button>
+    </form>
+    <a href="{% url 'paid_services' %}">Просмотреть все услуги</a>
+
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="message {{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

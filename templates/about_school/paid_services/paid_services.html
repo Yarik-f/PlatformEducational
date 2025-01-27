@@ -1,0 +1,31 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block title %}
+    <title>Платные образовательные услуги</title>
+{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/about_school.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="about-school-container">
+        <aside>
+            {% include 'about_school/about_school_menu.html' %}
+        </aside>
+        <div class="main-content">
+            <div class="paid-services-container">
+                <h1>Платные образовательные услуги</h1>
+                <div class="services-list">
+                    {% for service in services %}
+                        <a href="{% url 'paid_service_detail' service.id %}" class="service-link">
+                            <div class="service-card">
+                                <h2>{{ service.name }}</h2>
+                            </div>
+                        </a>
+                    {% empty %}
+                        <p>Платные образовательные услуги не найдены.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

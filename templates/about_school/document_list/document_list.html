@@ -1,0 +1,53 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block title %}
+    <title>Список документов</title>
+{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/about_school.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="about-school-container">
+        <aside>
+            {% include 'about_school/about_school_menu.html' %}
+        </aside>
+        <div class="main-content">
+            <div class="document-list-container">
+                <h1>Список документов</h1>
+
+                <!-- Фильтр по категориям -->
+                <form method="get" class="filter-form">
+                    <label for="category">Категория:</label>
+                    <select name="category" id="category" onchange="this.form.submit()">
+                        <option value="">Все категории</option>
+                        {% for value, name in categories %}
+                            <option value="{{ value }}" {% if value == request.GET.category %}selected{% endif %}>
+                                {{ name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </form>
+
+                <!-- Список документов -->
+                <div class="document-list">
+                    {% for document in documents %}
+                        <div class="document-card">
+                            <div class="icon-and-name">
+                                <i class="file-icon">📄</i>
+                                {% if document.name_file %}
+                                    <h3>{{ document.name_file }}</h3>
+                                {% else %}
+                                    <h3>{{ document.file.name|slice:"18:" }}</h3>
+                                {% endif %}
+                            </div>
+                            <p><strong>Загружен:</strong> {{ document.uploaded_at|date:"d.m.Y H:i" }}</p>
+                            <a href="{{ document.file.url }}" target="_blank" class="download-link">Скачать</a>
+                        </div>
+                    {% empty %}
+                        <p>Документы не найдены.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

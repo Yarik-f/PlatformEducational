@@ -129,3 +129,248 @@ tr:nth-child(even) {
 .hidden {
     display: none;
 }
+
+/* Документы */
+.document-list-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.filter-form {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.filter-form label {
+    font-weight: bold;
+}
+
+.filter-form select {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.document-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.icon-and-name {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.icon-and-name h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.document-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.document-card h3 {
+    margin: 0 0 10px;
+    font-size: 18px;
+    color: #333;
+}
+
+.document-card p {
+    margin: 5px 0;
+    color: #666;
+    font-size: 14px;
+}
+
+.download-link {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.download-link:hover {
+    background-color: #0056b3;
+}
+
+/* Платные услуги */
+.paid-services-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2rem;
+    color: #333;
+}
+
+.services-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.services-list a {
+    text-decoration: none;
+}
+
+.service-card {
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+.service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.service-card h2 {
+    margin-bottom: 10px;
+    color: #007bff;
+}
+
+
+.service-card a:hover {
+    text-decoration: underline;
+}
+
+/* Детальные платные услуги */
+.paid-service-detail-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.back-link {
+    text-decoration: none;
+    background: #007bff;
+    color: #fff;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    transition: background 0.3s ease;
+}
+
+.back-link:hover {
+    background: #fff;
+    color: #007bff;
+    border: 1px solid #007bff;
+}
+
+.service-detail {
+    margin-top: 15px;
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.service-detail h1 {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.service-detail p {
+    margin: 10px 0;
+    color: #555;
+    font-size: 1rem;
+}
+
+.activity-link {
+    text-decoration: none;
+    background: #007bff;
+    color: #fff;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    transition: background 0.3s ease;
+}
+
+.activity-link:hover {
+    background: #fff;
+    color: #007bff;
+    border: 1px solid #007bff;
+}
+
+.file-link {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.file-link:hover {
+    text-decoration: underline;
+}
+
+
+/* Награды и лицензии */
+.card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    text-align: center;
+    padding: 15px;
+}
+
+.card-image {
+    width: 70%;
+    height: auto;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 15px;
+}
+
+.placeholder-image {
+    background: #f4f4f4;
+    color: #888;
+    padding: 50px 15px;
+    font-size: 0.9rem;
+}
+
+.card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.card p {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.card .date {
+    font-size: 0.8rem;
+    color: #999;
+}

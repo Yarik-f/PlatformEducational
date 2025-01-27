@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Question, AdmissionRequest, UploadedFile, AdditionalActivity
+from .models import Question, AdmissionRequest, UploadedFile, AdditionalActivity, AdditionalActivityRegistration
 
 
 class QuestionForm(forms.ModelForm):
@@ -35,6 +35,23 @@ class AdmissionRequestForm(forms.ModelForm):
             "grade_applied": forms.TextInput(attrs={"placeholder": "Например, 10 класс"}),
         }
 
+class ActivityRegistrationForm(forms.ModelForm):
+    class Meta:
+        model = AdditionalActivityRegistration
+        fields = ['name', 'email', 'phone', 'activity', 'notes']
+        widgets = {
+            'notes': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Добавьте комментарий (необязательно)'}),
+            'phone': forms.TextInput(attrs={'placeholder': 'Ваш номер телефона'}),
+            'email': forms.EmailInput(attrs={'placeholder': 'Ваш email'}),
+            'name': forms.TextInput(attrs={'placeholder': 'Ваше имя'}),
+        }
+        labels = {
+            'name': 'Ваше имя',
+            'email': 'Ваш email',
+            'phone': 'Ваш телефон',
+            'activity': 'Выберите услугу',
+            'notes': 'Примечания',
+        }
 
 class SingleFileUploadForm(forms.ModelForm):
     class Meta:
@@ -46,12 +63,17 @@ class FileUploadForm(forms.ModelForm):
     activity = forms.ModelChoiceField(
         queryset=AdditionalActivity.objects.all(),
         required=False,
-        label="Выберите услугу"
+        label="Услуга (необязательно)"
+    )
+    name_file = forms.CharField(
+        required=False,
+        label="Название документа",
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Введите название файла (необязательно)'})
     )
 
     class Meta:
         model = UploadedFile
-        fields = ['file', 'file_type', 'access_level']
+        fields = ['file', 'name_file', 'file_type', 'access_level']
         widgets = {
             'file': forms.FileInput(attrs={'class': 'form-control'}),
             'file_type': forms.Select(attrs={'class': 'form-control'}),

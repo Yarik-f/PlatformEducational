@@ -1,0 +1,42 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block title %}
+    <title>{{ service.name }}</title>
+{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/about_school.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="about-school-container">
+        <aside>
+            {% include 'about_school/about_school_menu.html' %}
+        </aside>
+        <div class="main-content">
+            <div class="paid-service-detail-container">
+                <a href="{% url 'paid_services' %}" class="back-link">Назад</a>
+                <div class="service-detail">
+                    <h1>{{ service.name }}</h1>
+                    <p><strong>Описание:</strong> {{ service.description|default:"Описание отсутствует" }}</p>
+                    <p><strong>Цена:</strong> {{ service.price }} руб.</p>
+                    <p><strong>Учитель:</strong>
+                        {% if service.teacher %}
+                            {{ service.teacher.first_name }} {{ service.teacher.last_name }}
+                        {% else %}
+                            Не назначен
+                        {% endif %}
+                    </p>
+                    {% if service.documents %}
+                        <p><strong>Документы:</strong>
+                            <a href="{% url 'download_file' service.documents.id %}" target="_blank" class="file-link">
+                                {{ service.documents.file.name|slice:"18:" }}
+                            </a>
+                        </p>
+                    {% else %}
+                        <p><strong>Документы:</strong> Отсутствуют</p>
+                    {% endif %}
+                    <a href="{% url 'register_activity' %}" class="activity-link">Записаться</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

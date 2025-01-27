@@ -19,6 +19,10 @@ class AdditionalActivityAdmin(admin.ModelAdmin):
     list_display = ('name', 'price', 'teacher', 'description')
     list_filter = ('teacher',)
 
+@admin.register(AdditionalActivityRegistration)
+class AdditionalActivityRegistrationAdmin(admin.ModelAdmin):
+    list_display = ['name', 'email', 'phone']
+
 
 @admin.register(Teacher)
 class TeacherAdmin(admin.ModelAdmin):

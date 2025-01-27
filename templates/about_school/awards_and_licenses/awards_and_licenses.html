@@ -1,0 +1,64 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block title %}
+    <title>Награды и Лицензии</title>
+{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/about_school.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="about-school-container">
+        <aside>
+            {% include 'about_school/about_school_menu.html' %}
+        </aside>
+        <div class="main-content">
+            <div class="container">
+                <h1>Награды и Лицензии</h1>
+
+                <section class="awards">
+                    <h2>Награды</h2>
+                    {% if awards %}
+                        <div class="card-container">
+                            {% for award in awards %}
+                                <div class="card">
+                                    {% if award.image %}
+                                        <img src="{{ award.image.url }}" alt="{{ award.title }}" class="card-image">
+                                    {% else %}
+                                        <div class="placeholder-image">Изображение отсутствует</div>
+                                    {% endif %}
+                                    <h3>{{ award.title }}</h3>
+                                    <p>{{ award.description|default:"Описание отсутствует" }}</p>
+                                    <p class="date">Добавлено: {{ award.created_at|date:"d.m.Y" }}</p>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p>Награды отсутствуют.</p>
+                    {% endif %}
+                </section>
+
+                <section class="licenses">
+                    <h2>Лицензии</h2>
+                    {% if licenses %}
+                        <div class="card-container">
+                            {% for license in licenses %}
+                                <div class="card">
+                                    {% if license.image %}
+                                        <img src="{{ license.image.url }}" alt="{{ license.title }}" class="card-image">
+                                    {% else %}
+                                        <div class="placeholder-image">Изображение отсутствует</div>
+                                    {% endif %}
+                                    <h3>{{ license.title }}</h3>
+                                    <p>{{ license.description|default:"Описание отсутствует" }}</p>
+                                    <p class="date">Добавлено: {{ license.created_at|date:"d.m.Y" }}</p>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p>Лицензии отсутствуют.</p>
+                    {% endif %}
+                </section>
+            </div>
+        </div>
+    </div>
+{% endblock %}
