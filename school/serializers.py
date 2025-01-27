@@ -39,3 +39,8 @@ class AdditionalActivitySerializer(serializers.ModelSerializer):
     class Meta:
         model = AdditionalActivity
         fields = ['id', 'name', 'description', 'price', 'documents', 'teacher']
+
+class AdditionalActivityRegistrationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AdditionalActivityRegistration
+        fields = '__all__'
