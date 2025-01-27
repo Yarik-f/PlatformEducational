@@ -1,0 +1,87 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block title %}
+    <title>Основные сведения</title>
+{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/about_school.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="about-school-container">
+        <aside>
+            {% include 'about_school/about_school_menu.html' %}
+        </aside>
+        <div class="main-content">
+            <div class="facility-content">
+                <h1>Список объектов</h1>
+                <label for="facility_type">Выберите тип объекта:</label>
+                <select id="facility_type" onchange="toggleTables()">
+                    <option value="classroom">Кабинет</option>
+                    <option value="practical_object">Объект для практических занятий</option>
+                </select>
+
+                <div id="classroom_table">
+                    <h2>Кабинеты</h2>
+                    <table>
+                        <tr>
+                            <th>Наименование кабинета</th>
+                            <th>Адрес</th>
+                            <th>Оснащенность</th>
+                            <th>Приспособленность</th>
+                        </tr>
+                        {% for facility in facilities %}
+                            {% if facility.facility_type == 'classroom' %}
+                                <tr>
+                                    <td>{{ facility.name }}</td>
+                                    <td>{{ facility.school_contact.address }}</td>
+                                    <td>{{ facility.equipment.all|join:", " }}</td>
+                                    <td>{{ facility.get_accessibility_display }}</td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </table>
+                </div>
+
+                <div id="practical_object_table" class="hidden">
+                    <h2>Объекты для практических занятий</h2>
+                    <table>
+                        <tr>
+                            <th>Наименование объекта</th>
+                            <th>Адрес</th>
+                            <th>Оснащенность</th>
+                            <th>Приспособленность</th>
+                        </tr>
+                        {% for facility in facilities %}
+                            {% if facility.facility_type == 'practical_object' %}
+                                <tr>
+                                    <td>{{ facility.name }}</td>
+                                    <td>{{ facility.school_contact.address }}</td>
+                                    <td>{{ facility.equipment.all|join:", " }}</td>
+                                    <td>{{ facility.get_accessibility_display }}</td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function toggleTables() {
+            var selectedType = document.getElementById('facility_type').value;
+            document.getElementById('classroom_table').classList.add('hidden');
+            document.getElementById('practical_object_table').classList.add('hidden');
+
+            if (selectedType === 'classroom') {
+                document.getElementById('classroom_table').classList.remove('hidden');
+            } else if (selectedType === 'practical_object') {
+                document.getElementById('practical_object_table').classList.remove('hidden');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            toggleTables();
+        });
+    </script>
+{% endblock %}
+

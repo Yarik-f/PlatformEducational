@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     {% block title %}<title>Моя школа</title>{% endblock %}
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    {% block extra_css %}
+    {% endblock %}
 </head>
 <body>
 <header class="main-header">
@@ -17,8 +19,7 @@
                 <li><a href="{% url 'home' %}">Главная</a></li>
                 <li><a href="{% url 'schedule' %}">Расписание</a></li>
                 <li><a href="{% url 'school_life' 'news' %}">Школьная жизнь</a></li>
-                <li><a href="{% url 'teacher' %}">Преподаватели</a></li>
-                <li><a href="{% url 'contacts' %}">Контакты</a></li>
+                <li><a href="{% url 'contacts' %}">Основные сведения</a></li>
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'profile' %}">Профиль</a></li>
                 {% else %}

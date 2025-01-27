@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Question, AdmissionRequest, UploadedFile
+from .models import Question, AdmissionRequest, UploadedFile, AdditionalActivity
 
 
 class QuestionForm(forms.ModelForm):
@@ -10,6 +10,7 @@ class QuestionForm(forms.ModelForm):
         widgets = {
             "question_text": forms.Textarea(attrs={"placeholder": "Введите ваш вопрос"}),
         }
+
 
 class AdmissionRequestForm(forms.ModelForm):
     class Meta:
@@ -34,19 +35,30 @@ class AdmissionRequestForm(forms.ModelForm):
             "grade_applied": forms.TextInput(attrs={"placeholder": "Например, 10 класс"}),
         }
 
+
 class SingleFileUploadForm(forms.ModelForm):
     class Meta:
         model = UploadedFile
         fields = ['file']
 
+
 class FileUploadForm(forms.ModelForm):
+    activity = forms.ModelChoiceField(
+        queryset=AdditionalActivity.objects.all(),
+        required=False,
+        label="Выберите услугу"
+    )
+
     class Meta:
         model = UploadedFile
-        fields = ['file', 'file_type']
+        fields = ['file', 'file_type', 'access_level']
         widgets = {
             'file': forms.FileInput(attrs={'class': 'form-control'}),
             'file_type': forms.Select(attrs={'class': 'form-control'}),
+            'access_level': forms.Select(attrs={'class': 'form-control'}),
         }
+
+
 class ExcelUploadForm(forms.Form):
     excel_file = forms.FileField(required=True)
 

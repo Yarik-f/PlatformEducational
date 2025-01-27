@@ -1,23 +1,30 @@
 {% extends 'index.html' %}
+{% load static %}
 {% block title %}
     <title>{{ blog.title }}</title>
 {% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/school_life.css' %}">
+{% endblock %}
 {% block content %}
-<div class="layout-container">
-    {% include 'school_life/menu.html' %}
+    <div class="layout-container">
+    <aside>
+        {% include 'school_life/menu.html' %}
+    </aside>
+        
 
-    <section class="main-content">
-        <div class="blog-detail">
-            <a href="{% url 'school_life' blog.id%}" class="back-button">← Назад</a>
-            
-            {% if blog.image %}
-                <img src="{{ blog.image.url }}" alt="{{ blog.title }}" class="blog-detail-image">
-            {% endif %}
-            
-            <p class="blog-detail-date"><strong>Дата публикации:</strong> {{ blog.pub_date }}</p>
-            <h1 class="blog-detail-title">{{ blog.title }}</h1>
-            <p class="blog-detail-description">{{ blog.description }}</p>
-        </div>
-    </section>
-</div>
+        <section class="main-content">
+            <div class="blog-detail">
+                <a href="{% url 'school_life' blog.category %}" class="back-button">← Назад</a>
+
+                {% if blog.image %}
+                    <img src="{{ blog.image.url }}" alt="{{ blog.title }}" class="blog-detail-image">
+                {% endif %}
+
+                <p class="blog-detail-date"><strong>Дата публикации:</strong> {{ blog.pub_date }}</p>
+                <h1 class="blog-detail-title">{{ blog.title }}</h1>
+                <p class="blog-detail-description">{{ blog.description }}</p>
+            </div>
+        </section>
+    </div>
 {% endblock %}

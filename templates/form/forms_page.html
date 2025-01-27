@@ -1,6 +1,10 @@
 {% extends 'index.html' %}
+{% load static %}
 {% block title %}
     <title>Формы</title>
+{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/forms.css' %}">
 {% endblock %}
 {% block content %}
     <div class="tabs-container">

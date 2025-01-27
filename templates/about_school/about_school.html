@@ -1,0 +1,19 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block title %}
+    <title>Основные сведения</title>
+{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/about_school.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="about-school-container">
+    <aside>
+        {% include 'about_school/about_school_menu.html' %}
+    </aside>
+        <div class="main-content">
+
+        </div>
+    </div>
+{% endblock %}
+

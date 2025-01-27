@@ -1,22 +1,22 @@
 {% extends 'index.html' %}
+{% load static %}
 {% block title %}
     <title>Жизнь школы</title>
 {% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/school_life.css' %}">
+    <link rel="stylesheet" href="{% static 'css/schedule.css' %}">
+{% endblock %}
 {% block content %}
-<div class="layout-container">
-    <aside class="sidebar">
-        {% include 'school_life/menu.html' %}
-    </aside>
+    <div class="layout-container">
+        <aside>
+            {% include 'school_life/menu.html' %}
+        </aside>
 
-    <main class="main-content">
-        {% if blogs %}
-            {% if current_category %}
+        <div class="main-content">
+            {% if blogs %}
                 <h1 class="category-title">{{ current_category }}</h1>
-            {% else %}
-                <h1 class="category-title">Все записи</h1>
-            {% endif %}
-
-            <div class="blog-list">
+                <div class="blog-list">
                 {% for blog in blogs %}
                     <div class="blog-item">
                         {% if blog.image %}
@@ -30,9 +30,10 @@
                         </div>
                     </div>
                 {% endfor %}
-        {% else %}
-            <p>Нет записей в этой категории.</p>
-        {% endif %}
-    </main>
-</div>
+            {% else %}
+                <p>Нет записей в этой категории.</p>
+            {% endif %}
+            </div>
+        </div>
+    </div>
 {% endblock %}

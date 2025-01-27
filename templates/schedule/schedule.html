@@ -1,17 +1,27 @@
 {% extends 'index.html' %}
 {% load static %}
 {% block title %}
-    <title>Главная страница</title>
+    <title>Расписание классов</title>
 {% endblock %}
-
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/schedule.css' %}">
+{% endblock %}
 {% block content %}
-    <h1>Все классы</h1>
-    <div class="schedule-content">
-
-        {% for school_class in classes %}
-            <div class="card">
-                <a href="{% url 'schedule_class' school_class.id %}">{{ school_class.name }}</a>
-            </div>
-        {% endfor %}
+    <div class="schedule-container">
+        <h1 class="schedule-title">Все классы</h1>
+        <div class="schedule-content">
+            {% for school_class in classes %}
+                <div class="card">
+                    <a href="{% url 'schedule_class' school_class.id %}" class="card-link">
+                        <div class="card-header">
+                            <h2 class="card-title">{{ school_class.name }}</h2>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Подробнее о расписании</p>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}

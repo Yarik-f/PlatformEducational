@@ -1,0 +1,61 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block title %}
+    <title>Учителя</title>
+{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/teachers.css' %}">
+    <link rel="stylesheet" href="{% static 'css/about_school.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="about-school-container">
+        <aside>
+            {% include 'about_school/about_school_menu.html' %}
+        </aside>
+        <div class="main-content">
+                <label for="teachers-filter" class="select-label">Фильтровать по должности:</label>
+                <select name="teachers" id="teachers-filter" class="custom-select">
+                    <option value="all">Все</option>
+                    <option value="director">Директор</option>
+                    <option value="management">Руководство</option>
+                    <option value="teacher">Учитель</option>
+                </select>
+
+            <div class="teachers-container">
+                {% for teacher in teachers %}
+                    <a href="{% url 'teacher_detail' teacher.id %}" class="teacher-card"
+                       data-position="{{ teacher.position }}">
+                        <img src="
+                                
+                                {% if teacher.image %}{{ teacher.image.url }}{% else %}{% static 'default-teacher.png' %}{% endif %}"
+                             alt="Фото преподавателя">
+                        <h2>{{ teacher.last_name }} {{ teacher.first_name }}</h2>
+                        <p class="position">{{ teacher.get_position_display }}</p>
+                        <p><strong>Телефон:</strong> {{ teacher.phone }}</p>
+                        <p><strong>Email:</strong> {{ teacher.email }}</p>
+                    </a>
+                {% empty %}
+                    <p>Преподаватели не найдены.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const filterSelect = document.getElementById("teachers-filter");
+            const teacherCards = document.querySelectorAll(".teacher-card");
+
+            filterSelect.addEventListener("change", () => {
+                const selectedPosition = filterSelect.value;
+
+                teacherCards.forEach(card => {
+                    if (selectedPosition === "all" || card.dataset.position === selectedPosition) {
+                        card.style.display = "block";
+                    } else {
+                        card.style.display = "none";
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}

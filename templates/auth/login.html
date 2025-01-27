@@ -1,6 +1,10 @@
 {% extends 'index.html' %}
+{% load static %}
 {% block title %}
     <title>Авторизация</title>
+{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/auth.css' %}">
 {% endblock %}
 {% block content %}
 <div class="login-container">

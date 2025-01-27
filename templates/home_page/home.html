@@ -3,7 +3,9 @@
 {% block title %}
     <title>Главная страница</title>
 {% endblock %}
-
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
 {% block content %}
     <div class="main-container">
         <div class="left-slider">
@@ -77,11 +79,13 @@
             <div class="about-school-contacts">
                 <div id="map" class="map"></div>
                 <h3>Контакты</h3>
-                <p><strong>Название:</strong> Средняя школа №42</p>
-                <p><strong>Адрес:</strong> ул. Школьная, д. 10, г. Москва</p>
-                <p><strong>Время работы:</strong> Пн-Пт: 8:00 - 18:00</p>
-                <p><strong>Телефон:</strong> +7 (495) 123-45-67</p>
-                <p><strong>Email:</strong> <a href="mailto:info@school42.ru">mail@simai.ru</a></p>
+                {% for contact in school_contact %}
+                <p><strong>Название:</strong> {{ contact.name }}</p>
+                <p><strong>Адрес:</strong> {{ contact.address }}</p>
+                <p><strong>Время работы:</strong> {{ contact.begin_time|date:"H:i" }} - {{ contact.end_time|date:"H:i" }}</p>
+                <p><strong>Телефон:</strong> {{ contact.phone }}</p>
+                <p><strong>Email:</strong> <a href="mailto:{{ contact.email }}">{{ contact.email }}</a></p>
+                {% endfor %}
             </div>
         </div>
     </div>

@@ -89,7 +89,45 @@ def import_schedule_from_excel_with_update(file):
         return False, f"Ошибка при обработке файла: {e}"
 
 
-def export_schedule_to_excel():
+def export_schedule_to_excel(classroom=None):
+    workbook = Workbook()
+    sheet = workbook.active
+    if classroom:
+        sheet.title = f"Расписание_{classroom}"
+    else:
+        sheet.title = "Расписание"
+
+    headers = ['Номер урока', 'Класс', 'День недели', 'Предмет', 'Кабинет', 'Учитель', 'Начало', 'Конец']
+    for col_num, header in enumerate(headers, 1):
+        column_letter = get_column_letter(col_num)
+        sheet[f"{column_letter}1"] = header
+
+    if classroom:
+        schedules = Schedule.objects.filter(school_class=classroom)
+    else:
+        schedules = Schedule.objects.all()
+
+    for row_num, schedule in enumerate(schedules, start=2):
+        sheet[f"A{row_num}"] = schedule.lesson_number
+        sheet[f"B{row_num}"] = schedule.school_class.name
+        sheet[f"C{row_num}"] = schedule.get_day_of_week_display()
+        sheet[f"D{row_num}"] = schedule.subject.name
+        sheet[f"E{row_num}"] = schedule.office
+        sheet[f"F{row_num}"] = f'{str(schedule.teacher.last_name)} {str(schedule.teacher.first_name)} {str(schedule.teacher.patronymic)}' if schedule.teacher else ""
+        sheet[f"G{row_num}"] = schedule.start_time.strftime('%H:%M')
+        sheet[f"H{row_num}"] = schedule.end_time.strftime('%H:%M')
+
+    output = BytesIO()
+    workbook.save(output)
+    output.seek(0)
+
+    response = HttpResponse(
+        output,
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+    response['Content-Disposition'] = 'attachment; filename="schedule.xlsx"'
+    return response
+def export_schedule_classroom_to_excel(classroom):
     workbook = Workbook()
     sheet = workbook.active
     sheet.title = "Расписание"
@@ -99,7 +137,7 @@ def export_schedule_to_excel():
         column_letter = get_column_letter(col_num)
         sheet[f"{column_letter}1"] = header
 
-    schedules = Schedule.objects.all()
+    schedules = Schedule.objects.filter(school_class=classroom)
     for row_num, schedule in enumerate(schedules, start=2):
         sheet[f"A{row_num}"] = schedule.lesson_number
         sheet[f"B{row_num}"] = schedule.school_class.name

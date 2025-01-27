@@ -13,7 +13,6 @@ class Blog(models.Model):
         ('news', 'Новости'),
         ('announce', 'Объявления'),
         ('event', 'Мероприятия'),
-        ('schedule', 'Расписание'),
     ]
     category = models.CharField(max_length=100, choices=CATEGORY_CHOICES, default='blog')
     title = models.CharField(max_length=100)
@@ -35,14 +34,24 @@ class Subject(models.Model):
 class AdditionalActivity(models.Model):
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField(blank=True, null=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Цена", null=True)
+    teacher = models.ForeignKey('Teacher', on_delete=models.CASCADE, related_name='activities',
+                                verbose_name="Учитель", null=True)
+    documents = models.ForeignKey(
+        'UploadedFile', on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        related_name="related_activities",
+        verbose_name="Документы"
+    )
 
     def __str__(self):
-        return self.name
-
+            return self.name
 
 class Teacher(models.Model):
     POSITION_CHOICES = [
         ('director', 'Директор'),
+        ('management', 'Руководство'),
         ('teacher', 'Учитель'),
     ]
 
@@ -62,8 +71,6 @@ class Teacher(models.Model):
     branch = models.CharField(max_length=255, verbose_name="Филиал")
     educational_programs = models.TextField(blank=True, null=True, verbose_name="Образовательные программы")
     subjects_taught = models.ManyToManyField(Subject, related_name="teachers", verbose_name="Преподаваемые дисциплины")
-    additional_taught = models.ManyToManyField(AdditionalActivity, related_name="teachers", blank=True,
-                                               verbose_name="Дополнительные услуги")
     image = models.ImageField(upload_to='images/teacher', blank=True, null=True, verbose_name="Фото преподавателя")
     user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True, verbose_name="Пользователь")
 
@@ -94,6 +101,8 @@ def create_user_for_teacher(sender, instance, created, **kwargs):
 
         if instance.position == 'director':
             group, _ = Group.objects.get_or_create(name='Directors')
+        elif instance.position == 'management':
+            group, _ = Group.objects.get_or_create(name='Managements')
         else:
             group, _ = Group.objects.get_or_create(name='Teachers')
         user.groups.add(group)
@@ -240,19 +249,41 @@ class Student(models.Model):
 
 
 class UploadedFile(models.Model):
-    APPROVED_CHOICES = [
-        ('admission', 'Поступление'),
-        ('management', 'Руководство '),
-        ('student', 'Студентам'),
-        ('teacher', 'Учителям'),
+    # Категории документов
+    CATEGORY_CHOICES = [
+        ('local_regulations', 'Локальные нормативные акты'),
+        ('paid_service', 'Платные услуги'),
     ]
+
+    ACCESS_CHOICES = [
+        ('all', 'Все пользователи'),
+        ('students', 'Только студенты'),
+        ('teachers', 'Только учителя'),
+        ('management', 'Только руководство'),
+    ]
+
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="uploaded_files")
-    file = models.FileField(upload_to="temp_files/")
-    file_type = models.CharField(max_length=10, choices=APPROVED_CHOICES, verbose_name='Тип документа', null=True)
+    name_file = models.CharField(max_length=50, verbose_name='Наименование', null=True)
+    file = models.FileField(upload_to="uploads/documents/")
+    file_type = models.CharField(max_length=50, choices=CATEGORY_CHOICES, verbose_name='Категория документа', null=True)
+    access_level = models.CharField(max_length=15, choices=ACCESS_CHOICES, verbose_name='Доступ', default='all')
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
+    activities = models.ManyToManyField(
+        'AdditionalActivity',
+        blank=True,
+        related_name="associated_files",
+        verbose_name="Платные услуги"
+    )
+    apply_to_all_services = models.BooleanField(
+        default=False,
+        verbose_name="Применить ко всем платным услугам"
+    )
+
     def __str__(self):
-        return f"{self.file.name} ({self.user.username})"
+        return f"{self.file.name}"
+
+
 class DocumentArchive(models.Model):
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE, verbose_name='Пользователь')
     archive = models.FileField(upload_to='archives/', verbose_name='Архив документов')
@@ -289,3 +320,84 @@ class Schedule(models.Model):
     )
     start_time = models.TimeField(verbose_name="Время начала урока")
     end_time = models.TimeField(verbose_name="Время окончания урока")
+
+    def __str__(self):
+        return self.school_class
+
+class Award(models.Model):
+    title = models.CharField(max_length=255, verbose_name="Название награды")
+    description = models.TextField(blank=True, verbose_name="Описание награды")
+    image = models.ImageField(upload_to='awards/', blank=True, null=True, verbose_name="Фото награды")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
+
+    def __str__(self):
+        return self.title
+
+
+class License(models.Model):
+    title = models.CharField(max_length=255, verbose_name="Название лицензии")
+    description = models.TextField(blank=True, verbose_name="Описание лицензии")
+    image = models.ImageField(upload_to='licenses/', blank=True, null=True, verbose_name="Фото лицензии")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
+
+    def __str__(self):
+        return self.title
+
+class SchoolContactInfo(models.Model):
+    name = models.CharField(max_length=255, verbose_name="Название школы")
+    address = models.TextField(verbose_name="Адрес", blank=True)
+    phone = models.CharField(max_length=20, verbose_name="Телефон", blank=True)
+    email = models.EmailField(verbose_name="Электронная почта", blank=True)
+    begin_time = models.TimeField(verbose_name='Начало рабочего дня', null=True, blank=True)
+    end_time = models.TimeField(verbose_name='Конец рабочего дня', null=True)
+
+    latitude = models.DecimalField(
+        max_digits=9,
+        decimal_places=6,
+        verbose_name="Широта",
+        blank=True,
+        null=True,
+        help_text="Координаты для отображения на карте"
+    )
+    longitude = models.DecimalField(
+        max_digits=9,
+        decimal_places=6,
+        verbose_name="Долгота",
+        blank=True,
+        null=True,
+        help_text="Координаты для отображения на карте"
+    )
+
+    def __str__(self):
+        return self.name
+
+
+class Equipment(models.Model):
+    name = models.CharField(max_length=255, verbose_name="Наименование оборудования")
+
+    def __str__(self):
+        return self.name
+
+class Facility(models.Model):
+    FACILITY_CHOICES = [
+        ('classroom', 'Кабинет'),
+        ('practical_object', 'Объект для практических занятий'),
+    ]
+    facility_type = models.CharField(
+        max_length=50,
+        choices=FACILITY_CHOICES,
+        verbose_name="Тип объекта",
+        default='classroom'
+    )
+    school_contact = models.ForeignKey(SchoolContactInfo, on_delete=models.CASCADE, verbose_name="Адрес")
+    name = models.CharField(max_length=255, verbose_name="Наименование кабинета")
+    equipment = models.ManyToManyField(Equipment, verbose_name="Оснащенность кабинета")
+    accessibility = models.CharField(
+        max_length=255,
+        choices=[("partial", "Частичная"), ("full", "Полная"), ("none", "Отсутствует")],
+        verbose_name="Приспособленность для инвалидов",
+        default="partial"
+    )
+
+    def __str__(self):
+        return f"{self.name} ({self.school_contact})"

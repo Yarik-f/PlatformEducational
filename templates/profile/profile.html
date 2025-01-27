@@ -1,6 +1,10 @@
 {% extends 'index.html' %}
+{% load static %}
 {% block title %}
     <title>Профиль</title>
+{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
 {% endblock %}
 {% block content %}
     <div class="profile-container">

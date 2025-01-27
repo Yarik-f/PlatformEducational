@@ -1,0 +1,169 @@
+/* Стили для страницы Жизнь школы */
+/* Общий контейнер для меню и контента */
+.layout-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    gap: 20px;
+}
+
+.main-content {
+    grid-column: span 3;
+}
+/* Меню */
+.sidebar-menu {
+    width: 250px;
+    background-color: #f9f9f9;
+    border-right: 1px solid #ddd;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    overflow-y: auto;
+    border-radius: 5px  ;
+}
+
+.sidebar-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-menu ul li {
+    margin-bottom: 15px;
+}
+
+.sidebar-menu ul li a {
+    text-decoration: none;
+    color: #333;
+    font-size: 16px;
+    font-weight: 500;
+    display: block;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.sidebar-menu ul li a:hover {
+    background-color: #007bff;
+    color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Блоги */
+.category-title {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #333;
+    border-bottom: 3px solid #f05a28;
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+.blog-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.blog-item {
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    cursor: pointer;
+}
+
+.blog-item:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px);
+}
+
+.blog-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+.blog-content {
+    padding: 15px;
+}
+
+.blog-date {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 10px;
+}
+
+.blog-title {
+    font-size: 18px;
+    color: #333;
+    margin: 0;
+}
+
+.blog-title a {
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.3s ease;
+}
+
+.blog-title a:hover {
+    color: #f05a28;
+}
+
+/* Подробная информация элемента блога */
+.blog-detail {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.back-button {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 10px 15px;
+    background-color: #f05a28;
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.back-button:hover {
+    background-color: #d9431a;
+}
+
+.blog-detail-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    object-fit: cover;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.blog-detail-date {
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 10px;
+}
+
+.blog-detail-title {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #f05a28;
+    padding-bottom: 5px;
+}
+
+.blog-detail-description {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #444;
+}

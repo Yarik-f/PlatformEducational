@@ -1,0 +1,154 @@
+/* Рассписание */
+.schedule-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+    text-align: center;
+}
+
+.schedule-title {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.schedule-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    justify-items: center;
+}
+
+.card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
+    max-width: 300px;
+    overflow: hidden;
+}
+.card-title{
+    color: white;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    padding: 20px;
+}
+
+.card-header {
+    background: #007bff;
+    color: #fff;
+    padding: 15px;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.card-body {
+    padding: 15px;
+    text-align: center;
+}
+
+.card-text {
+    font-size: 1rem;
+    color: #555;
+}
+
+
+.schedule-class-content {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.schedule-class-title {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.table-container {
+    overflow-x: auto;
+    border-radius: 10px;
+}
+
+.schedule-table {
+    width: 100%;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.schedule-table th {
+    background: #007bff;
+    color: #fff;
+    padding: 15px;
+    font-size: 1.1rem;
+    text-align: left;
+}
+
+.schedule-table td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    font-size: 1rem;
+    color: #333;
+}
+
+.schedule-table tr:nth-child(even) {
+    background-color: #f3f3f3;
+}
+
+.schedule-table tr:hover {
+    background-color: #eaf3ff;
+    transition: 0.3s;
+}
+
+.schedule-export-container {
+    margin-top: 30px;
+    display: flex;
+    justify-content: end;
+}
+.upload-title {
+    font-size: 1.5rem;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.export-btn {
+    background: linear-gradient(135deg, #007bff, #007bff);
+    border: none;
+    color: #fff;
+    font-size: 1.2rem;
+    padding: 15px 30px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.export-btn:hover {
+    background: linear-gradient(135deg, #1c3d61, #5eabff);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.export-btn:active {
+    transform: translateY(0);
+}
+

@@ -4,16 +4,20 @@ from school import views
 
 router = DefaultRouter()
 router.register(r'teachers', views.TeacherViewSet, basename='teachers')
+router.register(r'schedule', views.ScheduleViewSet, basename='schedule')
+router.register(r'activities', views.AdditionalActivityViewSet, basename='activity')
 urlpatterns = [
     path('api/', include(router.urls)),
     path('', views.home_view, name='home'),
     path('teacher/', views.teacher_view, name='teacher'),
     path('teacher/<int:teacher_id>/', views.teacher_detail_view, name='teacher_detail'),
+    path('school_life/schedule/', views.schedule, name='schedule'),
+    path('school_life/schedule/<int:class_id>/', views.schedule_class, name='schedule_class'),
     path('school_life/<str:category>/', views.school_life_view, name='school_life'),
     path('school_life/blog/<int:blog_id>/', views.school_life_detail_view, name='blog_detail'),
-    path('schedule/', views.schedule, name='schedule'),
-    path('schedule/<int:class_id>/', views.schedule_class, name='schedule_class'),
-    path('contacts/', views.contacts_view, name='contacts'),
+
+    path('about_school/contacts/', views.contacts_view, name='contacts'),
+    path('about_school/facility/', views.facility_list, name='facility'),
     path('forms/', views.forms_view, name='forms'),
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),

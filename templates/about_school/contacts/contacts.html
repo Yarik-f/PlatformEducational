@@ -1,0 +1,57 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block title %}
+    <title>Контактная информация</title>
+{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/about_school.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="about-school-container">
+        <aside>
+            {% include 'about_school/about_school_menu.html' %}
+        </aside>
+        <div class="main-content">
+            <div class="contact-container">
+                <h1>Контактная информация</h1>
+
+                <div class="contact-details">
+                    {% for contact in school_contact %}
+                        <p><strong>Название:</strong>{{ contact.name }}</p>
+                        <p><strong>Адрес:</strong> {{ contact.address }}</p>
+                        <p><strong>Телефон:</strong> {{ contact.phone }}</p>
+                        <p><strong>Email:</strong> <a href="mailto:{{ contact.email }}">{{ contact.email }}u</a></p>
+                    {% endfor %}
+                </div>
+
+                <h2>Наше местоположение</h2>
+                <div id="map"></div>
+            </div>
+        </div>
+
+    </div>
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+    <script>
+        ymaps.ready(init);
+        {% for contact in school_contact %}
+            function init() {
+                var map = new ymaps.Map("map", {
+
+                    center: [{{ contact.latitude }}, {{ contact.longitude }}],
+
+                    zoom: 12,
+                    controls: ['zoomControl', 'fullscreenControl']
+                });
+                var placemark = new ymaps.Placemark([{{ contact.latitude }}, {{ contact.longitude }}], {
+                    balloonContent: '<strong>Средняя школа №42</strong><br>ул. Школьная, д. 10, г. Москва',
+                }, {
+                    preset: 'islands#icon',
+                    iconColor: '#F05A28'
+                });
+
+                map.geoObjects.add(placemark);
+            }
+        {% endfor %}
+    </script>
+{% endblock %}
+

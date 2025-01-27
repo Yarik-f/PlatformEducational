@@ -1,21 +1,25 @@
 {% extends 'index.html' %}
 {% load static %}
 {% block title %}
-    <title>Главная страница</title>
+    <title>Расписание для {{ school_class.name }}</title>
 {% endblock %}
-
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/schedule.css' %}">
+{% endblock %}
 {% block content %}
-        <div class="schedule-content">
-            <h1>Расписание для {{ school_class.name }}</h1>
+    <div class="schedule-class-content">
+        <h1 class="schedule-class-title">Расписание для {{ school_class.name }}</h1>
+
+        <div class="table-container">
             <table class="schedule-table">
                 <thead>
                 <tr>
                     <th>День</th>
-                    <th>Номер урока</th>
+                    <th>№ урока</th>
                     <th>Предмет</th>
                     <th>Учитель</th>
-                    <th>Начало урока</th>
-                    <th>Конец урока</th>
+                    <th>Начало</th>
+                    <th>Конец</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -32,4 +36,13 @@
                 </tbody>
             </table>
         </div>
+
+        <div class="schedule-export-container">
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="tab" value="schedule-tab">
+                <button type="submit" name="export_schedule" value="1" class="export-btn">Скачать расписание</button>
+            </form>
+        </div>
+    </div>
 {% endblock %}

@@ -1,0 +1,127 @@
+/* Стили для форм и табов */
+.tabs-container {
+    max-width: 500px;
+    margin: 40px auto;
+    background: #ffffff;
+    padding: 15px;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Вкладки */
+.tabs {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 15px;
+}
+
+.tab-link {
+    padding: 8px 12px;
+    border: none;
+    border-bottom: 2px solid transparent;
+    background: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #555;
+    transition: color 0.3s ease, border-bottom 0.3s ease;
+}
+
+.tab-link.active {
+    color: #007bff;
+    border-bottom: 2px solid #007bff;
+}
+
+.tab-link:hover {
+    color: #0056b3;
+}
+
+.tab-content-form {
+    display: none;
+}
+
+.tab-content-form.active {
+    display: block;
+}
+
+/* Формы */
+.form-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.custom-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.custom-form p {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.custom-form input[type="text"],
+.custom-form input[type="email"],
+.custom-form input[type="file"],
+.custom-form select,
+.custom-form textarea {
+    width: 95%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease;
+}
+
+.custom-form input:focus,
+.custom-form textarea:focus {
+    border-color: #007bff;
+    outline: none;
+    background-color: #fff;
+}
+
+.submit-button {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+    background-color: #0056b3;
+}
+
+.alert-success {
+    padding: 8px;
+    margin-top: 15px;
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 0.75rem;
+}
+
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    10% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    90% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}

@@ -12,11 +12,14 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404, FileRespons
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.utils.encoding import smart_str
-from rest_framework import viewsets
+from rest_framework import status
+from rest_framework.exceptions import ValidationError
+from rest_framework.response import Response
+from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 
 from school.forms import QuestionForm, AdmissionRequestForm, SingleFileUploadForm, FileUploadForm, ExcelUploadForm
 from school.models import *
-from school.serializers import TeacherSerializer
+from school.serializers import TeacherSerializer, ScheduleSerializer, AdditionalActivitySerializer
 from school.utils import export_schedule_to_excel, import_schedule_from_excel_with_update
 
 
@@ -42,12 +45,14 @@ def home_view(request):
     director_positions = dict(positions).get('director')
     news = Blog.objects.filter(category='news')
     announce = Blog.objects.filter(category='announce')
+    school_contact = SchoolContactInfo.objects.all()
     return render(request, 'home_page/home.html',
                   {
                       'news': news,
                       'announces': announce,
                       'director': director,
                       'director_positions': director_positions,
+                      'school_contact': school_contact
                   })
 
 
@@ -75,18 +80,52 @@ def school_life_detail_view(request, blog_id):
     })
 
 
+def schedule(request):
+    classes = Class.objects.all()
+    return render(request, 'schedule/schedule.html', {
+        'classes': classes,
+    })
+
+
+def schedule_class(request, class_id):
+    school_class = Class.objects.get(id=class_id)
+    if request.method == 'POST':
+        if 'export_schedule' in request.POST:
+            return export_schedule_to_excel(school_class)
+    schedule = Schedule.objects.filter(school_class=school_class).order_by('day_of_week', 'lesson_number')
+    return render(request, 'schedule/schedule_class.html', {
+        'school_class': school_class,
+        'schedule': schedule
+    })
+
+
 def teacher_view(request):
     teachers = Teacher.objects.all()
-    return render(request, 'teacher_page/teacher_card.html', {'teachers': teachers})
+    return render(request, 'about_school/teacher_page/teacher_card.html', {'teachers': teachers})
 
 
 def teacher_detail_view(request, teacher_id):
     teacher = get_object_or_404(Teacher, id=teacher_id)
-    return render(request, 'teacher_page/teacher_detail.html', {'teacher': teacher})
+    return render(request, 'about_school/teacher_page/teacher_detail.html', {'teacher': teacher})
+
+
+def about_school_view(request):
+    school_contact = SchoolContactInfo.objects.all()
+    for i in school_contact:
+        print(type(i.longitude))
+    return render(request, 'about_school/about_school.html', {'school_contact': school_contact})
 
 
 def contacts_view(request):
-    return render(request, 'contacts/contacts.html')
+    school_contact = SchoolContactInfo.objects.all()
+    for i in school_contact:
+        print(type(i.longitude))
+    return render(request, 'about_school/contacts/contacts.html', {'school_contact': school_contact})
+
+
+def facility_list(request):
+    facilities = Facility.objects.all()
+    return render(request, 'about_school/facility/facility.html', {'facilities': facilities})
 
 
 def forms_view(request):
@@ -147,8 +186,6 @@ def profile_view(request):
     user = request.user
     profile = access_role(request)[0]
     role = access_role(request)[1]
-    for key, i in Schedule.DAY_OF_WEEK_CHOICES:
-        print(key)
 
     context = {
         'user': user,
@@ -391,38 +428,30 @@ def custom_password_change(request):
     })
 
 
-def schedule(request):
-    classes = Class.objects.all()
-    return render(request, 'schedule/schedule.html', {'classes': classes})
-
-
-def schedule_class(request, class_id):
-    school_class = Class.objects.get(id=class_id)
-
-    schedule = Schedule.objects.filter(school_class=school_class).order_by('day_of_week', 'lesson_number')
-    return render(request, 'schedule/day_schedule.html', {
-        'school_class': school_class,
-        'schedule': schedule
-    })
-
-
 @login_required
 def unified_view(request):
     active_tab = request.POST.get('tab', 'upload-tab')
     role = access_role(request)[1]
 
     if request.method == 'POST':
-        print(f"POST received with active_tab: {active_tab}")
         if active_tab == 'upload-tab':
             form = FileUploadForm(request.POST, request.FILES)
             if form.is_valid():
                 file_instance = form.save(commit=False)
                 file_instance.user = request.user
                 file_instance.save()
+
+                # Привязываем файл к выбранной услуге, если она указана
+                activity = form.cleaned_data.get('activity')
+                if activity:
+                    activity.documents = file_instance
+                    activity.save()
+
                 messages.success(request, "Файл успешно загружен!")
                 return redirect(f'{request.path}?tab=upload-tab')
             else:
                 messages.error(request, "Ошибка при загрузке файла. Проверьте данные.")
+
         elif active_tab == 'schedule-tab':
             if 'excel_file' in request.FILES:
                 excel_file = request.FILES['excel_file']
@@ -432,22 +461,49 @@ def unified_view(request):
                 else:
                     messages.error(request, message)
                 return redirect(f'{request.path}?tab=schedule-tab')
-            elif 'export_schedule' in request.POST:  # Экспорт расписания
+            elif 'export_schedule' in request.POST:
                 return export_schedule_to_excel()
 
     file_form = FileUploadForm()
     schedule_form = ExcelUploadForm()
+    activities = AdditionalActivity.objects.all()
     files = UploadedFile.objects.all()
 
     return render(request, 'profile/upload_files.html', {
         'active_tab': active_tab,
         'file_form': file_form,
         'schedule_form': schedule_form,
+        'activities': activities,
         'files': files,
-        'role': role,
+        'role': role
     })
 
 
-class TeacherViewSet(viewsets.ReadOnlyModelViewSet):
+class ScheduleViewSet(ReadOnlyModelViewSet):
+    queryset = Schedule.objects.all()
+    serializer_class = ScheduleSerializer
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        class_id = self.request.query_params.get('class_id')
+        class_name = self.request.query_params.get('class_name')
+
+        if not class_id and not class_name:
+            raise ValidationError("Укажите параметр 'class_id' или 'class_name' для фильтрации.")
+
+        if class_id:
+            queryset = queryset.filter(school_class__id=class_id)
+        elif class_name:
+            queryset = queryset.filter(school_class__name=class_name)
+
+        return queryset
+
+
+class TeacherViewSet(ReadOnlyModelViewSet):
     queryset = Teacher.objects.all()
     serializer_class = TeacherSerializer
+
+
+class AdditionalActivityViewSet(ReadOnlyModelViewSet):
+    queryset = AdditionalActivity.objects.select_related('teacher').prefetch_related('documents')
+    serializer_class = AdditionalActivitySerializer
